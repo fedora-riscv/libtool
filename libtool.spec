@@ -1,19 +1,19 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
 Version: 1.4.2
-Release: 7
+Release: 11
 License: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.bz2
 URL: http://www.gnu.org/software/libtool/
+#Patch0: libtool-1.4.2-branch-1-4-2.patch
 Patch1: libtool-1.3.5-mktemp.patch
 Patch2: libtool-1.4-nonneg.patch
 Patch4: libtool-1.4.2-s390.patch
 Patch5: libtool-1.4.2-test-quote.patch
-#Patch6: libtool-1.4.2-filemagic.patch
-#Patch7: libtool-1.4.2-archive-shared.patch
-#Patch8: libtool-1.4.2-destdir-relink-58664.patch
-Prefix: %{_prefix}
+Patch6: libtool-1.4.2-relink-58664.patch
+Patch7: libtool-1.4.2-dup-deps.patch
+Patch8: libtool-1.4.2-libtoolize-configure.ac.patch
 PreReq: /sbin/install-info, autoconf, automake >= 1.4p1, m4, perl
 Requires: libtool-libs = %{version}-%{release}, mktemp
 BuildRoot: %{_tmppath}/%{name}-root
@@ -43,20 +43,27 @@ provide the dynamic loading library
 
 %prep
 %setup -q
+#%patch0 -b .stable-branch
 %patch1 -p1 -b .mktemp
 %patch2 -p1 -b .nonneg
 %patch4 -p1 -b .s390
 %patch5 -p1 -b .test
-#%patch6 -p1 -b .magic
-#%patch7 -p1 -b .archive
+%patch6 -p1 -b .relink
+%patch7 -p1 -b .dupdep
+%patch8 -p1 -b .ltize-cfg
+
+#autoreconf
 
 %build
-# define libtoolize to true, in case configure calls it
-%define __libtoolize /bin/true
 %configure
-						
+
 make -C doc
 make
+
+# 16/83 tests fail on ia64 (see #56744)
+%ifnarch ia64
+make check
+%endif
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
@@ -109,6 +116,21 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Tue Aug 13 2002 Jens Petersen <petersen@redhat.com> 1.4.2-11
+- don't hardcode "configure.in" in libtoolize (#70864)
+  [reported by bastiaan@webcriminals.com]
+- make check, but not on ia64
+
+* Fri Jun 21 2002 Tim Powers <timp@redhat.com> 1.4.2-10
+- automated rebuild
+
+* Thu May 23 2002 Tim Powers <timp@redhat.com> 1.4.2-9
+- automated rebuild
+
+* Fri Apr 26 2002 Jens Petersen <petersen@redhat.com> 1.4.2-8
+- add old patch from aoliva to fix relinking when installing into a buildroot
+- backport dup-deps fix from cvs stable branch
+
 * Wed Mar 27 2002 Jens Petersen <petersen@redhat.com> 1.4.2-7
 - run ldconfig in postin and postun
 
