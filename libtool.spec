@@ -1,18 +1,21 @@
 %define upstream_version 1.5.14
-%define gcc_version 3.4.3
+%define gcc_version %(gcc -dumpversion)
+
+# N.B. on next upstream release beyond 1.5.14 please remove the weird
+# Version suffix.
 
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}.multilib2
-Release:	%{gcc_version}
+Release:	4
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
 URL:		http://www.gnu.org/software/libtool/
 BuildRoot:	%{_tmppath}/%{name}-root
-Patch1:		libtool-1.5.12.multilib2.patch
+Patch1:		libtool-1.5.14-multilib.patch
 PreReq:		/sbin/install-info
-BuildRequires:	autoconf >= 2.59, automake >= 1.9.4, texinfo
+BuildRequires:	autoconf >= 2.59, automake >= 1.9.2, texinfo
 # make sure we can configure all supported langs
 BuildRequires:	gcc, gcc-c++, libstdc++-devel, gcc-g77, gcc-java
 # /usr/bin/libtool includes paths within gcc's versioned directories
@@ -68,12 +71,13 @@ Static libraries and header files for development with ltdl.
 
 
 %prep
-%setup -n libtool-%{upstream_version}
-%patch1 -p1
-
-
+%setup -n libtool-%{upstream_version} -q
+%patch1 -p1 -b .multilib
 
 %build
+
+./bootstrap
+
 export CC=gcc
 export CXX=g++
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
@@ -134,6 +138,9 @@ fi
 
 
 %changelog
+* Tue Feb 15 2005 Joe Orton <jorton@redhat.com> 1.5.14.multilib2-4
+- revert to the old multilib patch (#138742)
+
 * Sun Feb 13 2005 Florian La Roche <laroche@redhat.com>
 - 1.5.14 bugfix release
 
