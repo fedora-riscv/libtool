@@ -1,7 +1,7 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
 Version: 1.5.6
-Release: 1
+Release: 2
 License: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
@@ -80,6 +80,7 @@ provide the dynamic loading library
 %build
 export CC=gcc
 export CXX=g++
+export CFLAGS="$RPM_OPT_FLAGS -fPIC"
 %configure
 make
 
@@ -128,6 +129,9 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Thu May 13 2004 Thomas Woerner <twoerner@redhat.com> - 1.5.6-2
+- compile libltdl.a PIC
+
 * Mon Apr 12 2004 Jens Petersen <petersen@redhat.com> - 1.5.6-1
 - update to 1.5.6 bugfix release
 
