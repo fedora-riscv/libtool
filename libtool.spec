@@ -1,11 +1,11 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
-Version: 1.5.2
-Release: 2.1
+Version: 1.5.6
+Release: 1
 License: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
-Source1: libtool-1.4.3-ltmain-SED.patch
+Source1: libtool-1.5.4-ltmain-SED.patch
 URL: http://www.gnu.org/software/libtool/
 #Patch1: libtool-1.5-mktemp.patch
 Patch2: libtool-1.4-nonneg.patch
@@ -74,7 +74,8 @@ provide the dynamic loading library
 #%%patch17 -p1 -b .nostdlib
 
 # patch10 and patch14 change a Makefile.am
-autoreconf
+# patch9 touches libtool.m4
+./bootstrap
 
 %build
 export CC=gcc
@@ -127,6 +128,16 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Mon Apr 12 2004 Jens Petersen <petersen@redhat.com> - 1.5.6-1
+- update to 1.5.6 bugfix release
+
+* Sun Apr  4 2004 Jens Petersen <petersen@redhat.com> - 1.5.4-1
+- 1.5.4 bugfix release
+- improve libtool-1.4.2-multilib.patch (Albert Chin) and only apply to
+  libtool.m4
+- use bootstrap instead of autoreconf to update configuration
+- update libtool-1.4.3-ltmain-SED.patch to libtool-1.5.4-ltmain-SED.patch
+
 * Tue Mar 02 2004 Elliot Lee <sopwith@redhat.com>
 - rebuilt
 
