@@ -7,7 +7,7 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}.multilib2
-Release:	4
+Release:	5
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -138,6 +138,9 @@ fi
 
 
 %changelog
+* Tue Mar  1 2005 Alexandre Oliva <aoliva@redhat.com> 1.5.14.multilib2-5
+- rebuild with GCC 4.
+
 * Tue Feb 15 2005 Joe Orton <jorton@redhat.com> 1.5.14.multilib2-4
 - revert to the old multilib patch (#138742)
 
