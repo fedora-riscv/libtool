@@ -1,7 +1,7 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
 Version: 1.4.2
-Release: 11
+Release: 12
 License: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.bz2
@@ -57,8 +57,8 @@ provide the dynamic loading library
 %build
 %configure
 
-make -C doc
 make
+make -C doc
 
 # 16/83 tests fail on ia64 (see #56744)
 %ifnarch ia64
@@ -101,8 +101,7 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING INSTALL NEWS README
-%doc THANKS TODO ChangeLog demo
+%doc AUTHORS COPYING INSTALL NEWS README THANKS TODO ChangeLog
 %{_bindir}/*
 %{_includedir}/*
 %{_infodir}/libtool.info*
@@ -116,6 +115,9 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Mon Aug 19 2002 Jens Petersen <petersen@redhat.com> 1.4.2-12
+- don't include demo in doc, specially now that we "make check" (#71609)
+
 * Tue Aug 13 2002 Jens Petersen <petersen@redhat.com> 1.4.2-11
 - don't hardcode "configure.in" in libtoolize (#70864)
   [reported by bastiaan@webcriminals.com]
