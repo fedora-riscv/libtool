@@ -1,4 +1,4 @@
-%define upstream_version 1.5.12
+%define upstream_version 1.5.14
 %define gcc_version 3.4.3
 
 Summary:	The GNU Portable Library Tool
@@ -134,6 +134,9 @@ fi
 
 
 %changelog
+* Sun Feb 13 2005 Florian La Roche <laroche@redhat.com>
+- 1.5.14 bugfix release
+
 * Sun Feb  6 2005 Daniel Reed <djr@redhat.com> 1.5.12.multilib2-3.4.3
 - update to the 1.5.12 bugfix release
   - Makes use of $datarootdir, which is necessary for Autoconf >= 2.60.
