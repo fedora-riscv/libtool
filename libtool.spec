@@ -1,40 +1,23 @@
-Summary: The GNU libtool, which simplifies the use of shared libraries.
-Name: libtool
-Version: 1.5.6
-Release: 4
-License: GPL
-Group: Development/Tools
-Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
-Source1: libtool-1.5.4-ltmain-SED.patch
-URL: http://www.gnu.org/software/libtool/
-#Patch1: libtool-1.5-mktemp.patch
-Patch2: libtool-1.4-nonneg.patch
-Patch4: libtool-1.5-libtool.m4-x86_64.patch
-Patch9: libtool-1.4.2-multilib.patch
-Patch10: libtool-1.4.2-demo.patch
-## Patch from James Henstridge making restricted symbol exports work on Linux
-#Patch11: libtool-1.5-expsym-linux.patch
-## http://mail.gnu.org/pipermail/bug-libtool/2002-October/004272.html
-#Patch12: libtool-1.5-readonlysym.patch
-# Fix automake related test failure
-Patch14: libtool-1.5-testfailure.patch
-#Patch15: libtool-1.5-relink-libdir-order-91110.patch
-#Patch16: libtool-1.5-AC_PROG_LD_GNU-quote-v-97608.patch
-#Patch17: libtool-1.5-nostdlib.patch
-PreReq: /sbin/install-info, autoconf, automake, m4, perl
-BuildRequires: autoconf, automake, texinfo
-# make sure we can configure all supported langs
-Buildrequires: gcc, gcc-c++, libstdc++-devel, gcc-g77, gcc-java
-Requires: libtool-libs = %{version}-%{release}, mktemp
-BuildRoot: %{_tmppath}/%{name}-root
+Summary:	The GNU libtool, which simplifies the use of shared libraries.
+Name:		libtool
+Version:	1.5.10
+Release:	0.2
+License:	GPL
+Group:		Development/Tools
+Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
+URL:		http://www.gnu.org/software/libtool/
+#Patch9:		libtool-1.4.2-multilib.patch
 
-# run "make check" by default
-%{?_without_check: %define _without_check 1}
-%{!?_without_check: %define _without_check 0}
-# except ia64 where currently 16/83 tests fail (see #55176)
-%ifarch ia64
-  %define _without_check 1
-%endif
+#### generated patch
+# This must always be the last patch applied
+#Patch100:	libtool-generated.patch
+
+PreReq:		/sbin/install-info, autoconf, automake, m4, perl
+BuildRequires:	autoconf, automake, texinfo
+# make sure we can configure all supported langs
+Buildrequires:	gcc, gcc-c++, libstdc++-devel, gcc-g77, gcc-java
+Requires:	libtool-libs = %{version}-%{release}, mktemp
+BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
 The libtool package contains the GNU libtool, a set of shell scripts
@@ -60,24 +43,12 @@ with GNU libtool, you should install the libtool-libs package to
 provide the dynamic loading library
 
 %prep
-%setup -q
-#%%patch1 -p1 -b .mktemp
-%patch2 -p1 -b .nonneg
-%patch4 -p1 -b .x86_64
-%patch9 -p1 -b .multilib
-%ifarch x86_64 s390 s390x
-%patch10 -p1 -b .demo
-%endif
-#%%patch11 -p1 -b .expsym-linux
-#%%patch12 -p1 -b .readonlysym
-%patch14 -p1 -b .testfailure
-#%%patch15 -p1 -b .libdir-order
-#%%patch16 -p1 -b .ldquote
-#%%patch17 -p1 -b .nostdlib
+%setup
+#%patch9 -p1
 
-# patch10 and patch14 change a Makefile.am
-# patch9 touches libtool.m4
-./bootstrap
+#### generated patch
+# This must always be the last patch applied
+#%patch100 -p1
 
 %build
 export CC=gcc
@@ -85,17 +56,11 @@ export CXX=g++
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
 %configure
 make
-
-%if ! %{_without_check}
-  make check # VERBOSE=yes
-%endif
+make check || make check VERBOSE=yes
 
 %install
 rm -rf %{buildroot}
 %makeinstall
-
-# add SED definition to ltmain.sh for legacy ltconfig's
-patch -d %{buildroot}%{_datadir}/libtool -z .sed < %{SOURCE1}
 
 rm -f %{buildroot}%{_infodir}/dir
 
