@@ -1,7 +1,7 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
 Version: 1.3.5
-Release: 8a
+Release: 9
 Copyright: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
@@ -9,7 +9,6 @@ Patch0: libtool-1.3.2-arm.patch
 Patch1: libtool-1.2f-cache.patch
 Patch2: libtool-1.3.5-mktemp.patch
 Patch3: libtool-1.3.5-nonneg.patch
-Patch4: libtool-1.3.5-s390x.patch
 Prefix: %{_prefix}
 PreReq: /sbin/install-info autoconf automake m4 perl
 Requires: libtool-libs = %{version}-%{release}, mktemp
@@ -45,7 +44,6 @@ provide the dynamic loading library
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 #./configure --prefix=%{_prefix}
@@ -111,9 +109,6 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
-* Mon Jan 15 2001 Fritz Elfert <felfert@millenux.com>
-- Added s390x (IBM zSeries 64bit) architecture.
-
 * Thu Jul 13 2000 Elliot Lee <sopwith@redhat.com>
 - Fix recognition of ^0[0-9]+$ as a non-negative integer.
 
