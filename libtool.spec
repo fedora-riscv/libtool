@@ -1,27 +1,26 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
-Version: 1.5
-Release: 8
+Version: 1.5.2
+Release: 2.1
 License: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
 Source1: libtool-1.4.3-ltmain-SED.patch
 URL: http://www.gnu.org/software/libtool/
-Patch1: libtool-1.5-mktemp.patch
+#Patch1: libtool-1.5-mktemp.patch
 Patch2: libtool-1.4-nonneg.patch
 Patch4: libtool-1.5-libtool.m4-x86_64.patch
-#Patch6: libtool-1.4.2-relink-58664.patch
 Patch9: libtool-1.4.2-multilib.patch
 Patch10: libtool-1.4.2-demo.patch
-# Patch from James Henstridge making restricted symbol exports work on Linux
-Patch11: libtool-1.5-expsym-linux.patch
-# http://mail.gnu.org/pipermail/bug-libtool/2002-October/004272.html
-Patch12: libtool-1.5-readonlysym.patch
+## Patch from James Henstridge making restricted symbol exports work on Linux
+#Patch11: libtool-1.5-expsym-linux.patch
+## http://mail.gnu.org/pipermail/bug-libtool/2002-October/004272.html
+#Patch12: libtool-1.5-readonlysym.patch
 # Fix automake related test failure
 Patch14: libtool-1.5-testfailure.patch
-Patch15: libtool-1.5-relink-libdir-order-91110.patch
-Patch16: libtool-1.5-AC_PROG_LD_GNU-quote-v-97608.patch
-Patch17: libtool-1.5-nostdlib.patch
+#Patch15: libtool-1.5-relink-libdir-order-91110.patch
+#Patch16: libtool-1.5-AC_PROG_LD_GNU-quote-v-97608.patch
+#Patch17: libtool-1.5-nostdlib.patch
 PreReq: /sbin/install-info, autoconf, automake >= 1.4p1, m4, perl
 BuildRequires: autoconf automake
 Requires: libtool-libs = %{version}-%{release}, mktemp
@@ -60,20 +59,19 @@ provide the dynamic loading library
 
 %prep
 %setup -q
-%patch1 -p1 -b .mktemp
+#%%patch1 -p1 -b .mktemp
 %patch2 -p1 -b .nonneg
 %patch4 -p1 -b .x86_64
-#%%patch6 -p1 -b .relink
 %patch9 -p1 -b .multilib
 %ifarch x86_64 s390 s390x
 %patch10 -p1 -b .demo
 %endif
-%patch11 -p1 -b .expsym-linux
-%patch12 -p1 -b .readonlysym
+#%%patch11 -p1 -b .expsym-linux
+#%%patch12 -p1 -b .readonlysym
 %patch14 -p1 -b .testfailure
-%patch15 -p1 -b .libdir-order
-%patch16 -p1 -b .ldquote
-%patch17 -p1 -b .nostdlib
+#%%patch15 -p1 -b .libdir-order
+#%%patch16 -p1 -b .ldquote
+#%%patch17 -p1 -b .nostdlib
 
 # patch10 and patch14 change a Makefile.am
 autoreconf
@@ -129,6 +127,19 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Tue Mar 02 2004 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
+* Fri Feb 13 2004 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
+* Mon Jan 26 2004 Jens Petersen <petersen@redhat.com> - 1.5.2-1
+- update to 1.5.2 bugfix release
+- update libtool-1.5-libtool.m4-x86_64.patch
+- nolonger need libtool-1.5-mktemp.patch, libtool-1.5-expsym-linux.patch,
+  libtool-1.5-readonlysym.patch, libtool-1.5-relink-libdir-order-91110.patch,
+  libtool-1.5-AC_PROG_LD_GNU-quote-v-97608.patch and libtool-1.5-nostdlib.patch
+
 * Tue Oct 28 2003 Jens Petersen <petersen@redhat.com> - 1.5-8
 - update libtool-1.4.2-multilib.patch to also deal with powerpc64 (#103316)
   [Joe Orton]
@@ -176,7 +187,7 @@ fi
   - add quoting in mktemp patch
   - add libtool-1.5-readonlysym.patch
   - add libtool-1.5-testfailure.patch workaround
-  - relink patch no longer needed
+  - no longer need libtool-1.4.2-relink-58664.patch
 
 * Sat Feb 08 2003 Florian La Roche <Florian.LaRoche@redhat.de> - 1.4.3-5
 - add config.guess and config.sub, otherwise old versions of
