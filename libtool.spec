@@ -1,12 +1,11 @@
 Summary:	The GNU libtool, which simplifies the use of shared libraries.
 Name:		libtool
 Version:	1.5.10
-Release:	0.2
+Release:	0.3
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
 URL:		http://www.gnu.org/software/libtool/
-#Patch9:		libtool-1.4.2-multilib.patch
 
 #### generated patch
 # This must always be the last patch applied
@@ -44,7 +43,6 @@ provide the dynamic loading library
 
 %prep
 %setup
-#%patch9 -p1
 
 #### generated patch
 # This must always be the last patch applied
