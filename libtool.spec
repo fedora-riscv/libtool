@@ -1,22 +1,36 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
-Version: 1.4.2
-Release: 12
+Version: 1.4.3
+Release: 5
 License: GPL
 Group: Development/Tools
-Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.bz2
+Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
+Source1: libtool-1.4.3-ltmain-SED.patch
+Source2: config.guess
+Source3: config.sub
 URL: http://www.gnu.org/software/libtool/
-#Patch0: libtool-1.4.2-branch-1-4-2.patch
 Patch1: libtool-1.3.5-mktemp.patch
 Patch2: libtool-1.4-nonneg.patch
-Patch4: libtool-1.4.2-s390.patch
-Patch5: libtool-1.4.2-test-quote.patch
+Patch4: libtool-1.4.2-s390_x86_64.patch
+#Patch5: libtool-1.4.2-test-quote.patch
 Patch6: libtool-1.4.2-relink-58664.patch
-Patch7: libtool-1.4.2-dup-deps.patch
-Patch8: libtool-1.4.2-libtoolize-configure.ac.patch
+#Patch7: libtool-1.4.2-dup-deps.patch
+#Patch8: libtool-1.4.2-libtoolize-configure.ac.patch
+Patch9: libtool-1.4.2-multilib.patch
+Patch10: libtool-1.4.2-demo.patch
 PreReq: /sbin/install-info, autoconf, automake >= 1.4p1, m4, perl
+# for AUTOTOOLS definition below
+BuildRequires: automake14
 Requires: libtool-libs = %{version}-%{release}, mktemp
 BuildRoot: %{_tmppath}/%{name}-root
+
+# run "make check" by default
+%{?_without_check: %define _without_check 1}
+%{!?_without_check: %define _without_check 0}
+# except ia64 where currently 16/83 tests fail (see #56744)
+%ifarch ia64
+  %define _without_check 1
+%endif
 
 %description
 The libtool package contains the GNU libtool, a set of shell scripts
@@ -34,7 +48,7 @@ Group: System Environment/Libraries
 
 %description libs
 The libtool-libs package contains the runtime libraries from GNU
-libtool.  GNU libtool uses these libraries to provide portible dynamic
+libtool.  GNU libtool uses these libraries to provide portable dynamic
 loading of shared libraries.
 
 If you are using some programs that provide shared libraries built
@@ -43,48 +57,44 @@ provide the dynamic loading library
 
 %prep
 %setup -q
-#%patch0 -b .stable-branch
 %patch1 -p1 -b .mktemp
 %patch2 -p1 -b .nonneg
-%patch4 -p1 -b .s390
-%patch5 -p1 -b .test
+%patch4 -p1 -b .s390_x86_64
+#%patch5 -p1 -b .test
 %patch6 -p1 -b .relink
-%patch7 -p1 -b .dupdep
-%patch8 -p1 -b .ltize-cfg
+#%patch7 -p1 -b .dupdep
+#%patch8 -p1 -b .ltize-cfg
+%patch9 -p1 -b .multilib
+%ifarch x86_64 s390 s390x
+%patch10 -p1 -b .demo
+%endif
 
-#autoreconf
+# demo-make.test fails on i386 with new Automake 1.6.3 and later
+%define AUTOTOOLS AUTOMAKE=automake-1.4 ACLOCAL=aclocal-1.4
+%{AUTOTOOLS} autoreconf
 
 %build
-%configure
+%configure %{AUTOTOOLS}
+make %{AUTOTOOLS}
 
-make
-make -C doc
-
-# 16/83 tests fail on ia64 (see #56744)
-%ifnarch ia64
-make check
+%if ! %{_without_check}
+  make %{AUTOTOOLS} check #VERBOSE=yes
 %endif
 
 %install
-rm -rf ${RPM_BUILD_ROOT}
-mkdir -p ${RPM_BUILD_ROOT}%{_prefix}
+rm -rf %{buildroot}
 %makeinstall
 
-cp install-sh missing mkinstalldirs demo
+# add SED definition to ltmain.sh for legacy ltconfig's
+patch -d %{buildroot}%{_datadir}/libtool -z .sed < %{SOURCE1}
 
-{ cd ${RPM_BUILD_ROOT}
-  gzip -9nf .%{_infodir}/*.info*
-# XXX remove zero length file
-  rm -f .%{_datadir}/libtool/libltdl/stamp-h.in
-# XXX forcibly break hardlinks
-  mv .%{_datadir}/libtool/libltdl .%{_datadir}/libtool/libltdl-X
-  mkdir .%{_prefix}/share/libtool/libltdl
-  cp .%{_datadir}/libtool/libltdl-X/* .%{_datadir}/libtool/libltdl
-  rm -rf .%{_prefix}/share/libtool/libltdl-X
-}
+cp %{SOURCE2} %{buildroot}%{_datadir}/libtool/config.guess
+cp %{SOURCE3} %{buildroot}%{_datadir}/libtool/config.sub
+
+rm -f %{buildroot}%{_infodir}/dir
 
 %clean
-rm -rf ${RPM_BUILD_ROOT}
+rm -rf %{buildroot}
 
 %post
 /sbin/install-info %{_infodir}/libtool.info.gz %{_infodir}/dir
@@ -115,6 +125,57 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Sat Feb 08 2003 Florian La Roche <Florian.LaRoche@redhat.de>
+- add config.guess and config.sub, otherwise old versions of
+  these files can creep into /usr/share/libtool/
+
+* Wed Jan 22 2003 Tim Powers <timp@redhat.com>
+- rebuilt
+
+* Mon Jan 13 2003 Jens Petersen <petersen@redhat.com> 1.4.3-3
+- fix mktemp to work when running mktemp fails (#76602)
+  [reported by (Oron Peled)]
+- remove info dir file, don't exclude it
+- fix typo in -libs description (#79619)
+- use buildroot instead of RPM_BUILD_ROOT
+
+* Tue Jan 07 2003 Karsten Hopp <karsten@redhat.de> 1.4.3-2.2
+- use lib64 on s390x, too.
+
+* Thu Dec  5 2002 Jens Petersen <petersen@redhat.com>
+- add comment to explain why we use an old Automake for building
+- buildrequire automake14
+
+* Sat Nov 23 2002 Jens Petersen <petersen@redhat.com>
+- add --without check build option to allow disabling of "make check"
+- exclude info dir file rather than removing
+
+* Sat Nov 23 2002 Jens Petersen <petersen@redhat.com> 1.4.3-2
+- define SED in ltmain.sh for historic ltconfig files
+- define macro AUTOTOOLS to hold automake-1.4 and aclocal-1.4, and use it
+- leave old missing file for now
+- general spec file cleanup
+  - don't copy install files to demo nor mess with installed ltdl files
+  - don't need to run make in doc
+  - force removal of info dir file
+  - don't need to create install prefix dir
+  - don't bother gzipping info files ourselves
+
+* Mon Nov 18 2002 Jens Petersen <petersen@redhat.com> 1.4.3-1
+- update to 1.4.3
+- remove obsolete patches (test-quote, dup-deps, libtoolize-configure.ac)
+- apply the multilib patch to just the original config files
+- update x86_64/s390 patch and just apply to original config files
+- use automake-1.4 in "make check" for demo-make.test to pass!
+- remove info dir file that is not installed
+- make autoreconf update missing
+
+* Mon Oct 07 2002 Phil Knirsch <pknirsch@redhat.com>  1.4.2-12.2
+- Added s390x and x64_64 support.
+
+* Fri Oct  4 2002 Nalin Dahyabhai <nalin@redhat.com> 1.4.2-12.1
+- rebuild
+
 * Mon Aug 19 2002 Jens Petersen <petersen@redhat.com> 1.4.2-12
 - don't include demo in doc, specially now that we "make check" (#71609)
 
