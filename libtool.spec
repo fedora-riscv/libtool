@@ -1,16 +1,17 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
-Version: 1.3.5
-Release: 9
+Version: 1.4
+Release: 7
 Copyright: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
-Patch0: libtool-1.3.2-arm.patch
-Patch1: libtool-1.2f-cache.patch
-Patch2: libtool-1.3.5-mktemp.patch
-Patch3: libtool-1.3.5-nonneg.patch
+Patch1: libtool-1.3.5-mktemp.patch
+Patch2: libtool-1.4-nonneg.patch
+Patch3: libtool-1.4-test.patch
+Patch4: libtool-1.4-cvs.patch
+Patch5: libtool-1.4.6-s390.patch 
 Prefix: %{_prefix}
-PreReq: /sbin/install-info autoconf automake m4 perl
+PreReq: /sbin/install-info autoconf automake >= 1.4p1 m4 perl
 Requires: libtool-libs = %{version}-%{release}, mktemp
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -39,14 +40,13 @@ provide the dynamic loading library
 
 %prep
 %setup -q
-# XXX this appears to be finally integrated in 1.3.4
-#%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1 -b .s390
 
 %build
-#./configure --prefix=%{_prefix}
 # define libtoolize to true, in case configure calls it
 %define __libtoolize /bin/true
 %configure
@@ -58,7 +58,6 @@ make
 rm -rf ${RPM_BUILD_ROOT}
 mkdir -p ${RPM_BUILD_ROOT}%{_prefix}
 
-#make prefix=${RPM_BUILD_ROOT}%{_prefix} install
 %makeinstall
 
 cp install-sh missing mkinstalldirs demo
@@ -79,6 +78,10 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %post
 /sbin/install-info %{_infodir}/libtool.info.gz %{_infodir}/dir
+
+# the rest of the post script is not needed, right?
+exit 0
+
 # XXX hack alert
 cd %{_defaultdocdir}/libtool-%{version}/demo || cd %{_prefix}/doc/libtool-%{version}/demo || exit 0
 libtoolize --copy --force
@@ -109,6 +112,28 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Wed Jul 04 2001 Karsten Hopp <karsten@redhat.de>
+- add s390 patch for deplibs_check_method=pass_all
+
+* Tue Jun 12 2001 Florian La Roche <Florian.LaRoche@redhat.de>
+- add patches from Tim Waugh #42724
+
+* Mon Jun 11 2001 Florian La Roche <Florian.LaRoche@redhat.de>
+- add patches from cvs mainline
+
+* Thu Jun 07 2001 Florian La Roche <Florian.LaRoche@redhat.de>
+- fix a "test" bug in ltmain.sh
+
+* Sun Jun 03 2001 Florian La Roche <Florian.LaRoche@redhat.de>
+- disable the post commands to modify /usr/share/doc/
+
+* Sat May 12 2001 Owen Taylor <otaylor@redhat.com>
+- Require automake 1.4p1
+
+* Wed May 09 2001 Florian La Roche <Florian.LaRoche@redhat.de>
+- update to libtool 1.4
+- adjust or remove patches
+
 * Thu Jul 13 2000 Elliot Lee <sopwith@redhat.com>
 - Fix recognition of ^0[0-9]+$ as a non-negative integer.
 
