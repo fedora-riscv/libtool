@@ -1,7 +1,7 @@
 Summary:	The GNU libtool, which simplifies the use of shared libraries.
 Name:		libtool
 Version:	1.5.10
-Release:	0.3
+Release:	1
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
@@ -94,6 +94,14 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Tue Oct 26 2004 Daniel Reed <djr@redhat.com> 1.5.10-1
+- update to the 1.5.10 bugfix release
+  - obsoletes libtool-1.4-nonneg.patch
+  - obsoletes libtool-1.5-libtool.m4-x86_64.patch
+  - obsoletes libtool-1.4.2-multilib.patch
+  - obsoletes libtool-1.4.2-demo.patch
+  - obsoletes libtool-1.5-testfailure.patch
+
 * Tue Jul  6 2004 Jens Petersen <petersen@redhat.com> - 1.5.6-4
 - improve buildrequires and prereqs
 - buildrequire texinfo (Dawid Gajownik, 126950)
