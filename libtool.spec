@@ -1,7 +1,7 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
 Version: 1.5.6
-Release: 3
+Release: 4
 License: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
@@ -21,8 +21,10 @@ Patch14: libtool-1.5-testfailure.patch
 #Patch15: libtool-1.5-relink-libdir-order-91110.patch
 #Patch16: libtool-1.5-AC_PROG_LD_GNU-quote-v-97608.patch
 #Patch17: libtool-1.5-nostdlib.patch
-PreReq: /sbin/install-info, autoconf, automake >= 1.4p1, m4, perl
-BuildRequires: autoconf automake
+PreReq: /sbin/install-info, autoconf, automake, m4, perl
+BuildRequires: autoconf, automake, texinfo
+# make sure we can configure all supported langs
+Buildrequires: gcc, gcc-c++, libstdc++-devel, gcc-g77, gcc-java
 Requires: libtool-libs = %{version}-%{release}, mktemp
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -129,6 +131,10 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Tue Jul  6 2004 Jens Petersen <petersen@redhat.com> - 1.5.6-4
+- improve buildrequires and prereqs
+- buildrequire texinfo (Dawid Gajownik, 126950)
+
 * Tue Jun 15 2004 Elliot Lee <sopwith@redhat.com>
 - rebuilt
 
