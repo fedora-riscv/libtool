@@ -1,17 +1,19 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
-Version: 1.4
-Release: 8
+Version: 1.4.2
+Release: 6
 License: GPL
 Group: Development/Tools
-Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
+Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.bz2
+URL: http://www.gnu.org/software/libtool/
 Patch1: libtool-1.3.5-mktemp.patch
 Patch2: libtool-1.4-nonneg.patch
-Patch3: libtool-1.4-test.patch
-Patch4: libtool-1.4-cvs.patch
-Patch5: libtool-1.4.6-s390.patch 
+Patch4: libtool-1.4.2-s390.patch
+Patch5: libtool-1.4.2-test-quote.patch
+Patch6: libtool-1.4.2-filemagic.patch
+Patch7: libtool-1.4.2-archive-shared.patch
 Prefix: %{_prefix}
-PreReq: /sbin/install-info autoconf automake >= 1.4p1 m4 perl
+PreReq: /sbin/install-info, autoconf, automake >= 1.4p1, m4, perl
 Requires: libtool-libs = %{version}-%{release}, mktemp
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -40,11 +42,12 @@ provide the dynamic loading library
 
 %prep
 %setup -q
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1 -b .s390
+%patch1 -p1 -b .mktemp
+%patch2 -p1 -b .nonneg
+%patch4 -p1 -b .s390
+%patch5 -p1 -b .test
+#%patch6 -p1 -b .magic
+#%patch7 -p1 -b .archive
 
 %build
 # define libtoolize to true, in case configure calls it
@@ -100,18 +103,40 @@ fi
 %doc AUTHORS COPYING INSTALL NEWS README
 %doc THANKS TODO ChangeLog demo
 %{_bindir}/*
+%{_includedir}/*
 %{_infodir}/libtool.info*
-%{_includedir}/ltdl.h
 %{_datadir}/libtool
 %{_libdir}/libltdl.so
 %{_libdir}/libltdl.*a
-%{_datadir}/aclocal/libtool.m4
+%{_datadir}/aclocal/*
 
 %files libs
 %defattr(-,root,root)
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Thu Feb 28 2002 Jens Petersen <petersen@redhat.com> 1.4.2-6
+- rebuild in new environment
+
+* Tue Feb 12 2002 Jens Petersen <petersen@redhat.com> 1.4.2-5
+- revert filemagic and archive-shared patches following cvs (#54887)
+- don't change "&& test" to "-a" in ltmain.in
+
+* Wed Jan 09 2002 Tim Powers <timp@redhat.com> 1.4.2-4
+- automated rebuild
+
+* Mon Dec  3 2001 Jens Petersen <petersen@redhat.com> 1.4.2-3
+- test quoting patch should be on ltmain.in not ltmain.sh (#53276)
+- use file_magic for Linux ELF (#54887)
+- allow link against an archive when building a shared library (#54887)
+- include ltdl.m4 in manifest (#56671)
+
+* Wed Oct 24 2001 Jens Petersen <petersen@redhat.com> 1.4.2-2
+- added URL to spec
+
+* Tue Sep 18 2001 Bernhard Rosenkraenzer <bero@redhat.com> 1.4.2-1
+- 1.4.2 - sync up with autoconf...
+
 * Thu Jul  5 2001 Bernhard Rosenkraenzer <bero@redhat.de> 1.4-8
 - extend s390 patch to 2 more files
 - s/Copyright/License/
