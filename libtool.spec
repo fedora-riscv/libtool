@@ -1,33 +1,36 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
-Version: 1.4.3
-Release: 5
+Version: 1.5
+Release: 8
 License: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
 Source1: libtool-1.4.3-ltmain-SED.patch
-Source2: config.guess
-Source3: config.sub
 URL: http://www.gnu.org/software/libtool/
-Patch1: libtool-1.3.5-mktemp.patch
+Patch1: libtool-1.5-mktemp.patch
 Patch2: libtool-1.4-nonneg.patch
-Patch4: libtool-1.4.2-s390_x86_64.patch
-#Patch5: libtool-1.4.2-test-quote.patch
-Patch6: libtool-1.4.2-relink-58664.patch
-#Patch7: libtool-1.4.2-dup-deps.patch
-#Patch8: libtool-1.4.2-libtoolize-configure.ac.patch
+Patch4: libtool-1.5-libtool.m4-x86_64.patch
+#Patch6: libtool-1.4.2-relink-58664.patch
 Patch9: libtool-1.4.2-multilib.patch
 Patch10: libtool-1.4.2-demo.patch
+# Patch from James Henstridge making restricted symbol exports work on Linux
+Patch11: libtool-1.5-expsym-linux.patch
+# http://mail.gnu.org/pipermail/bug-libtool/2002-October/004272.html
+Patch12: libtool-1.5-readonlysym.patch
+# Fix automake related test failure
+Patch14: libtool-1.5-testfailure.patch
+Patch15: libtool-1.5-relink-libdir-order-91110.patch
+Patch16: libtool-1.5-AC_PROG_LD_GNU-quote-v-97608.patch
+Patch17: libtool-1.5-nostdlib.patch
 PreReq: /sbin/install-info, autoconf, automake >= 1.4p1, m4, perl
-# for AUTOTOOLS definition below
-BuildRequires: automake14
+BuildRequires: autoconf automake
 Requires: libtool-libs = %{version}-%{release}, mktemp
 BuildRoot: %{_tmppath}/%{name}-root
 
 # run "make check" by default
 %{?_without_check: %define _without_check 1}
 %{!?_without_check: %define _without_check 0}
-# except ia64 where currently 16/83 tests fail (see #56744)
+# except ia64 where currently 16/83 tests fail (see #55176)
 %ifarch ia64
   %define _without_check 1
 %endif
@@ -59,26 +62,30 @@ provide the dynamic loading library
 %setup -q
 %patch1 -p1 -b .mktemp
 %patch2 -p1 -b .nonneg
-%patch4 -p1 -b .s390_x86_64
-#%patch5 -p1 -b .test
-%patch6 -p1 -b .relink
-#%patch7 -p1 -b .dupdep
-#%patch8 -p1 -b .ltize-cfg
+%patch4 -p1 -b .x86_64
+#%%patch6 -p1 -b .relink
 %patch9 -p1 -b .multilib
 %ifarch x86_64 s390 s390x
 %patch10 -p1 -b .demo
 %endif
+%patch11 -p1 -b .expsym-linux
+%patch12 -p1 -b .readonlysym
+%patch14 -p1 -b .testfailure
+%patch15 -p1 -b .libdir-order
+%patch16 -p1 -b .ldquote
+%patch17 -p1 -b .nostdlib
 
-# demo-make.test fails on i386 with new Automake 1.6.3 and later
-%define AUTOTOOLS AUTOMAKE=automake-1.4 ACLOCAL=aclocal-1.4
-%{AUTOTOOLS} autoreconf
+# patch10 and patch14 change a Makefile.am
+autoreconf
 
 %build
-%configure %{AUTOTOOLS}
-make %{AUTOTOOLS}
+export CC=gcc
+export CXX=g++
+%configure
+make
 
 %if ! %{_without_check}
-  make %{AUTOTOOLS} check #VERBOSE=yes
+  make check # VERBOSE=yes
 %endif
 
 %install
@@ -87,9 +94,6 @@ rm -rf %{buildroot}
 
 # add SED definition to ltmain.sh for legacy ltconfig's
 patch -d %{buildroot}%{_datadir}/libtool -z .sed < %{SOURCE1}
-
-cp %{SOURCE2} %{buildroot}%{_datadir}/libtool/config.guess
-cp %{SOURCE3} %{buildroot}%{_datadir}/libtool/config.sub
 
 rm -f %{buildroot}%{_infodir}/dir
 
@@ -125,7 +129,56 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
-* Sat Feb 08 2003 Florian La Roche <Florian.LaRoche@redhat.de>
+* Tue Oct 28 2003 Jens Petersen <petersen@redhat.com> - 1.5-8
+- update libtool-1.4.2-multilib.patch to also deal with powerpc64 (#103316)
+  [Joe Orton]
+
+* Sun Oct 26 2003 Florian La Roche <Florian.LaRoche@redhat.de>
+- rebuild again, Jakub has done a new compiler version number
+
+* Thu Oct 02 2003 Florian La Roche <Florian.LaRoche@redhat.de>
+- rebuild
+
+* Thu Jul 17 2003 Jens Petersen <petersen@redhat.com> - 1.5-5
+- bring back libtool-1.4.2-demo.patch to disable nopic tests on amd64 
+  and s390x again
+
+* Tue Jul 15 2003 Owen Taylor <otaylor@redhat.com>
+- Fix misapplied chunk for expsym-linux patch
+
+* Tue Jul  8 2003 Jens Petersen <petersen@redhat.com> - 1.5-4
+- remove the quotes around LD in AC_PROG_LD_GNU (#97608)
+  [reported by twaugh]
+- use -nostdlib also when linking with g++ and non-GNU ld in
+  _LT_AC_LANG_CXX_CONFIG [reported by fnasser, patch by aoliva]
+- use %%configure with CC and CXX set 
+
+* Thu Jun 12 2003 Jens Petersen <petersen@redhat.com> - 1.5-3
+- don't use %%configure since target options caused libtool to assume
+  i386-redhat-linux-gcc instead of gcc for CC (reported by Joe Orton)
+- add libtool-1.5-relink-libdir-order-91110.patch to fix order of lib dirs
+  searched when relinking (#91110) [patch from Joe Orton]
+
+* Wed Jun 04 2003 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
+* Thu May  1 2003 Jens Petersen <petersen@redhat.com> - 1.5-1
+- update to 1.5
+- no longer override config.{guess,sub} for rpmbuild %%configure,
+  redhat-rpm-config owns those now
+- update and rename libtool-1.4.2-s390_x86_64.patch to
+  libtool-1.5-libtool.m4-x86_64.patch since s390 now included
+- buildrequire autoconf and automake, no longer automake14
+- skip make check on s390 temporarily
+- no longer skip demo-nopic.test on x86_64, s390 and s390x
+- from Owen Taylor
+  - add libtool-1.4.2-expsym-linux.patch (#55607) [from James Henstridge]
+  - add quoting in mktemp patch
+  - add libtool-1.5-readonlysym.patch
+  - add libtool-1.5-testfailure.patch workaround
+  - relink patch no longer needed
+
+* Sat Feb 08 2003 Florian La Roche <Florian.LaRoche@redhat.de> - 1.4.3-5
 - add config.guess and config.sub, otherwise old versions of
   these files can creep into /usr/share/libtool/
 
@@ -176,6 +229,9 @@ fi
 * Fri Oct  4 2002 Nalin Dahyabhai <nalin@redhat.com> 1.4.2-12.1
 - rebuild
 
+* Fri Sep 13 2002 Nalin Dahyabhai <nalin@redhat.com>
+- patch to find the proper libdir on multilib boxes
+ 
 * Mon Aug 19 2002 Jens Petersen <petersen@redhat.com> 1.4.2-12
 - don't include demo in doc, specially now that we "make check" (#71609)
 
