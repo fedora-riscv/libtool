@@ -7,7 +7,7 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}.multilib2
-Release:	5
+Release: 6
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -139,6 +139,9 @@ fi
 
 
 %changelog
+* Wed Mar 16 2005 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
 * Tue Mar  1 2005 Alexandre Oliva <aoliva@redhat.com> 1.5.14.multilib2-5
 - use gfortran instead of g77.
 - rebuild with GCC 4.
