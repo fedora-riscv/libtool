@@ -1,8 +1,8 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
 Version: 1.4
-Release: 7
-Copyright: GPL
+Release: 8
+License: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
 Patch1: libtool-1.3.5-mktemp.patch
@@ -112,6 +112,10 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Thu Jul  5 2001 Bernhard Rosenkraenzer <bero@redhat.de> 1.4-8
+- extend s390 patch to 2 more files
+- s/Copyright/License/
+
 * Wed Jul 04 2001 Karsten Hopp <karsten@redhat.de>
 - add s390 patch for deplibs_check_method=pass_all
 
