@@ -17,7 +17,7 @@ Patch1:		libtool-1.5.14-multilib.patch
 PreReq:		/sbin/install-info
 BuildRequires:	autoconf >= 2.59, automake >= 1.9.2, texinfo
 # make sure we can configure all supported langs
-BuildRequires:	gcc, gcc-c++, libstdc++-devel, gcc-g77, gcc-java
+BuildRequires:	gcc, gcc-c++, libstdc++-devel, gcc-gfortran, gcc-java
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
 Requires:	gcc = %{gcc_version}
@@ -80,6 +80,7 @@ Static libraries and header files for development with ltdl.
 
 export CC=gcc
 export CXX=g++
+export F77=gfortran
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
 %configure
 make
@@ -139,6 +140,7 @@ fi
 
 %changelog
 * Tue Mar  1 2005 Alexandre Oliva <aoliva@redhat.com> 1.5.14.multilib2-5
+- use gfortran instead of g77.
 - rebuild with GCC 4.
 
 * Tue Feb 15 2005 Joe Orton <jorton@redhat.com> 1.5.14.multilib2-4
