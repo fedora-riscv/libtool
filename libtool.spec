@@ -1,52 +1,77 @@
-Summary:	The GNU libtool, which simplifies the use of shared libraries.
+%define upstream_version 1.5.12
+%define gcc_version 3.4.3
+
+Summary:	The GNU Portable Library Tool
 Name:		libtool
-Version:	1.5.10
-Release:	1
+Version:	%{upstream_version}.multilib2
+Release:	%{gcc_version}
 License:	GPL
 Group:		Development/Tools
-Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
+Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
 URL:		http://www.gnu.org/software/libtool/
-
-#### generated patch
-# This must always be the last patch applied
-#Patch100:	libtool-generated.patch
-
-PreReq:		/sbin/install-info, autoconf, automake, m4, perl
-BuildRequires:	autoconf, automake, texinfo
-# make sure we can configure all supported langs
-Buildrequires:	gcc, gcc-c++, libstdc++-devel, gcc-g77, gcc-java
-Requires:	libtool-libs = %{version}-%{release}, mktemp
 BuildRoot:	%{_tmppath}/%{name}-root
+Patch1:		libtool-1.5.12.multilib2.patch
+PreReq:		/sbin/install-info
+BuildRequires:	autoconf >= 2.59, automake >= 1.9.4, texinfo
+# make sure we can configure all supported langs
+BuildRequires:	gcc, gcc-c++, libstdc++-devel, gcc-g77, gcc-java
+# /usr/bin/libtool includes paths within gcc's versioned directories
+# Libtool must be rebuilt whenever a new upstream gcc is built
+Requires:	gcc = %{gcc_version}
+Requires:	autoconf >= 2.50, automake >= 1.4
 
 %description
-The libtool package contains the GNU libtool, a set of shell scripts
-which automatically configure UNIX and UNIX-like architectures to
-generically build shared libraries.  Libtool provides a consistent,
-portable interface which simplifies the process of using shared
+GNU Libtool is a set of shell scripts which automatically configure UNIX and
+UNIX-like systems to generically build shared libraries. Libtool provides a
+consistent, portable interface which simplifies the process of using shared
 libraries.
 
-If you are developing programs which will use shared libraries, you
-should install libtool.
+If you are developing programs which will use shared libraries, but do not use
+the rest of the GNU Autotools (such as GNU Autoconf and GNU Automake), you
+should install the libtool package.
 
-%package libs
-Summary: Runtime libraries for GNU libtool.
-Group: System Environment/Libraries
+The libtool package also includes all files needed to integrate the GNU Portable
+Library Tool (libtool) and the GNU Libtool Dynamic Module Loader (ltdl) into a
+package built using the GNU Autotools (including GNU Autoconf and GNU Automake).
 
-%description libs
-The libtool-libs package contains the runtime libraries from GNU
-libtool.  GNU libtool uses these libraries to provide portable dynamic
-loading of shared libraries.
+This package includes a modification from the original GNU Libtool to allow
+support for multi-architecture systems, such as the AMD64 Opteron and the Intel 
+64-bit Xeon.
 
-If you are using some programs that provide shared libraries built
-with GNU libtool, you should install the libtool-libs package to
-provide the dynamic loading library
+
+
+%package ltdl
+Summary:	Runtime libraries for GNU Libtool Dynamic Module Loader
+Group:		System Environment/Libraries
+Provides:	libtool-libs
+Obsoletes:	libtool-libs
+
+%description ltdl
+The libtool-ltdl package contains the GNU Libtool Dynamic Module Loader, a
+library that provides a consistent, portable interface which simplifies the
+process of using dynamic modules.
+
+These runtime libraries are needed by programs that link directly to the
+system-installed ltdl libraries; they are not needed by software built using the
+rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
+
+
+
+%package ltdl-devel
+Summary:	Tools needed for development using the GNU Libtool Dynamic Module Loader
+Group:		Development/Libraries
+Requires:	libtool-libs = %{version}-%{release}
+
+%description ltdl-devel
+Static libraries and header files for development with ltdl.
+
+
 
 %prep
-%setup
+%setup -n libtool-%{upstream_version}
+%patch1 -p1
 
-#### generated patch
-# This must always be the last patch applied
-#%patch100 -p1
+
 
 %build
 export CC=gcc
@@ -54,46 +79,70 @@ export CXX=g++
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
 %configure
 make
-make check || make check VERBOSE=yes
+make check VERBOSE=yes > make_check.log 2>&1 || (cat make_check.log && false)
+
+
 
 %install
 rm -rf %{buildroot}
 %makeinstall
-
 rm -f %{buildroot}%{_infodir}/dir
+
+
 
 %clean
 rm -rf %{buildroot}
 
+
+
 %post
 /sbin/install-info %{_infodir}/libtool.info.gz %{_infodir}/dir
+
+%post ltdl -p /sbin/ldconfig
+
 
 
 %preun
 if [ "$1" = 0 ]; then
-    /sbin/install-info --delete %{_infodir}/libtool.info.gz %{_infodir}/dir
+	/sbin/install-info --delete %{_infodir}/libtool.info.gz %{_infodir}/dir
 fi
 
-%post libs -p /sbin/ldconfig
+%postun ltdl -p /sbin/ldconfig
 
-%postun libs -p /sbin/ldconfig
+
 
 %files
 %defattr(-,root,root)
 %doc AUTHORS COPYING INSTALL NEWS README THANKS TODO ChangeLog
-%{_bindir}/*
-%{_includedir}/*
-%{_infodir}/libtool.info*
+%{_infodir}/libtool.info.gz
+%{_bindir}/libtool
+%{_bindir}/libtoolize
+%{_datadir}/aclocal/*.m4
 %{_datadir}/libtool
-%{_libdir}/libltdl.so
-%{_libdir}/libltdl.*a
-%{_datadir}/aclocal/*
 
-%files libs
+%files ltdl
 %defattr(-,root,root)
 %{_libdir}/libltdl.so.*
 
+%files ltdl-devel
+%defattr(-,root,root)
+%{_libdir}/libltdl.a
+%{_libdir}/libltdl.la
+%{_libdir}/libltdl.so
+%{_includedir}/ltdl.h
+
+
+
 %changelog
+* Sun Feb  6 2005 Daniel Reed <djr@redhat.com> 1.5.12.multilib2-3.4.3
+- update to the 1.5.12 bugfix release
+  - Makes use of $datarootdir, which is necessary for Autoconf >= 2.60.
+  - Correctly skip hppa, x86_64, and s390* in tests/demo-nopic.test.
+  - Interpret `include' statements in toplevel ld.so.conf file.
+  - While "parsing" /etc/ld.so.conf, skip comments.
+- add dependency on gcc version; /usr/bin/libtool hardcodes paths into gcc's internal directories
+- replace "libtool-libs" with "libtool-ltdl" and "libtool-ltdl-devel"
+
 * Tue Oct 26 2004 Daniel Reed <djr@redhat.com> 1.5.10-1
 - update to the 1.5.10 bugfix release
   - obsoletes libtool-1.4-nonneg.patch
