@@ -1,7 +1,7 @@
 Summary: The GNU libtool, which simplifies the use of shared libraries.
 Name: libtool
 Version: 1.4.2
-Release: 6
+Release: 7
 License: GPL
 Group: Development/Tools
 Source: ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.bz2
@@ -10,8 +10,9 @@ Patch1: libtool-1.3.5-mktemp.patch
 Patch2: libtool-1.4-nonneg.patch
 Patch4: libtool-1.4.2-s390.patch
 Patch5: libtool-1.4.2-test-quote.patch
-Patch6: libtool-1.4.2-filemagic.patch
-Patch7: libtool-1.4.2-archive-shared.patch
+#Patch6: libtool-1.4.2-filemagic.patch
+#Patch7: libtool-1.4.2-archive-shared.patch
+#Patch8: libtool-1.4.2-destdir-relink-58664.patch
 Prefix: %{_prefix}
 PreReq: /sbin/install-info, autoconf, automake >= 1.4p1, m4, perl
 Requires: libtool-libs = %{version}-%{release}, mktemp
@@ -54,13 +55,12 @@ provide the dynamic loading library
 %define __libtoolize /bin/true
 %configure
 						
-make -k -C doc
+make -C doc
 make
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
 mkdir -p ${RPM_BUILD_ROOT}%{_prefix}
-
 %makeinstall
 
 cp install-sh missing mkinstalldirs demo
@@ -82,21 +82,15 @@ rm -rf ${RPM_BUILD_ROOT}
 %post
 /sbin/install-info %{_infodir}/libtool.info.gz %{_infodir}/dir
 
-# the rest of the post script is not needed, right?
-exit 0
-
-# XXX hack alert
-cd %{_defaultdocdir}/libtool-%{version}/demo || cd %{_prefix}/doc/libtool-%{version}/demo || exit 0
-libtoolize --copy --force
-aclocal
-autoheader
-automake
-autoconf
 
 %preun
 if [ "$1" = 0 ]; then
     /sbin/install-info --delete %{_infodir}/libtool.info.gz %{_infodir}/dir
 fi
+
+%post libs -p /sbin/ldconfig
+
+%postun libs -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root)
@@ -115,6 +109,9 @@ fi
 %{_libdir}/libltdl.so.*
 
 %changelog
+* Wed Mar 27 2002 Jens Petersen <petersen@redhat.com> 1.4.2-7
+- run ldconfig in postin and postun
+
 * Thu Feb 28 2002 Jens Petersen <petersen@redhat.com> 1.4.2-6
 - rebuild in new environment
 
