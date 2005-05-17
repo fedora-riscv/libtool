@@ -4,13 +4,13 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release: 1
+Release: 2
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
 URL:		http://www.gnu.org/software/libtool/
 BuildRoot:	%{_tmppath}/%{name}-root
-Patch1:		libtool-1.5.14-multilib.patch
+Patch1:		libtool-1.5.18-multilib.patch
 PreReq:		/sbin/install-info
 BuildRequires:	autoconf >= 2.59, automake >= 1.9.2, texinfo
 # make sure we can configure all supported langs
@@ -136,6 +136,9 @@ fi
 
 
 %changelog
+* Tue May 17 2005 Alexandre Oliva <aoliva@redhat.com> 1.5.18-2
+- Update patch file.
+
 * Tue May 17 2005 Alexandre Oliva <aoliva@redhat.com> 1.5.18-1
 - 1.5.18.  Removed .multilib2 suffix.
 
