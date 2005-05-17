@@ -1,12 +1,9 @@
-%define upstream_version 1.5.16
+%define upstream_version 1.5.18
 %define gcc_version %(gcc -dumpversion)
-
-# N.B. on next upstream release beyond 1.5.14 please remove the weird
-# Version suffix.
 
 Summary:	The GNU Portable Library Tool
 Name:		libtool
-Version:	%{upstream_version}.multilib2
+Version:	%{upstream_version}
 Release: 1
 License:	GPL
 Group:		Development/Tools
@@ -139,6 +136,9 @@ fi
 
 
 %changelog
+* Tue May 17 2005 Alexandre Oliva <aoliva@redhat.com> 1.5.18-1
+- 1.5.18.  Removed .multilib2 suffix.
+
 * Tue Apr 26 2005 Alexandre Oliva <aoliva@redhat.com> 1.5.16.multilib2-1
 - 1.5.16 fixes #132435.
 
