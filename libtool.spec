@@ -4,7 +4,7 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release: 3
+Release: 4
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -43,7 +43,7 @@ support for multi-architecture systems, such as the AMD64 Opteron and the Intel
 %package ltdl
 Summary:	Runtime libraries for GNU Libtool Dynamic Module Loader
 Group:		System Environment/Libraries
-Provides:	libtool-libs
+Provides:	libtool-libs = %{version}-%{release}
 Obsoletes:	libtool-libs
 
 %description ltdl
@@ -60,7 +60,7 @@ rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
 %package ltdl-devel
 Summary:	Tools needed for development using the GNU Libtool Dynamic Module Loader
 Group:		Development/Libraries
-Requires:	libtool-libs = %{version}-%{release}
+Requires:	libtool-ltdl = %{version}-%{release}
 
 %description ltdl-devel
 Static libraries and header files for development with ltdl.
@@ -136,6 +136,10 @@ fi
 
 
 %changelog
+* Thu Sep 08 2005 Florian La Roche <laroche@redhat.com>
+- add version-release to the Provides: and fix our own
+  Requires: line to the current naming scheme
+
 * Sat Jul  9 2005 Jakub Jelinek <jakub@redhat.com> 1.5.18-3
 - rebuilt with GCC 4.0.1.
 
