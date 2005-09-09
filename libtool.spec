@@ -1,10 +1,10 @@
-%define upstream_version 1.5.18
+%define upstream_version 1.5.20
 %define gcc_version %(gcc -dumpversion)
 
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release: 4
+Release: 1
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -136,6 +136,9 @@ fi
 
 
 %changelog
+* Fri Sep 09 2005 Karsten Hopp <karsten@redhat.de> 1.5.20-1
+- update
+
 * Thu Sep 08 2005 Florian La Roche <laroche@redhat.com>
 - add version-release to the Provides: and fix our own
   Requires: line to the current naming scheme
