@@ -4,7 +4,7 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release: 1
+Release:    2
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -45,6 +45,7 @@ Summary:	Runtime libraries for GNU Libtool Dynamic Module Loader
 Group:		System Environment/Libraries
 Provides:	libtool-libs = %{version}-%{release}
 Obsoletes:	libtool-libs
+License:    LGPL
 
 %description ltdl
 The libtool-ltdl package contains the GNU Libtool Dynamic Module Loader, a
@@ -115,7 +116,7 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING INSTALL NEWS README THANKS TODO ChangeLog
+%doc AUTHORS COPYING NEWS README THANKS TODO ChangeLog
 %{_infodir}/libtool.info.gz
 %{_bindir}/libtool
 %{_bindir}/libtoolize
@@ -124,6 +125,7 @@ fi
 
 %files ltdl
 %defattr(-,root,root)
+%doc libltdl/COPYING.LIB libltdl/README
 %{_libdir}/libltdl.so.*
 
 %files ltdl-devel
@@ -136,6 +138,9 @@ fi
 
 
 %changelog
+* Mon Sep 12 2005 Karsten Hopp <karsten@redhat.de> 1.5.20-2
+- add ltdl license, minor spec-file cleanups (#168075, Ville Skyttä)
+
 * Fri Sep 09 2005 Karsten Hopp <karsten@redhat.de> 1.5.20-1
 - update
 
