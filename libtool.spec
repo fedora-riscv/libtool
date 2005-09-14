@@ -4,7 +4,7 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release:    2
+Release:    3
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -138,6 +138,9 @@ fi
 
 
 %changelog
+* Wed Sep 14 2005 Karsten Hopp <karsten@redhat.de> 1.5.20-3
+- rebuilt
+
 * Mon Sep 12 2005 Karsten Hopp <karsten@redhat.de> 1.5.20-2
 - add ltdl license, minor spec-file cleanups (#168075, Ville Skyttä)
 
