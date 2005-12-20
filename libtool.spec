@@ -1,10 +1,10 @@
-%define upstream_version 1.5.20
+%define upstream_version 1.5.22
 %define gcc_version %(gcc -dumpversion)
 
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release:    5
+Release:    1
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -82,6 +82,8 @@ export F77=gfortran
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
 %configure
 make
+
+%check
 make check VERBOSE=yes > make_check.log 2>&1 || (cat make_check.log && false)
 
 
@@ -138,6 +140,13 @@ fi
 
 
 %changelog
+* Tue Dec 20 2005 Karsten Hopp <karsten@redhat.de> 1.5.22-1
+- update to 1.5.22, most prominent fixes are:
+  - Fix 1.5 regression that caused linking a program `-static' to also
+    link statically against installed libtool libraries, contrary to
+    documented (and actual 1.4.x) behavior.
+  - Fix silent failure of `libtoolize --ltdl' if libltdl files not present.
+
 * Wed Nov 30 2005 Warren Togami <wtogami@redhat.com> 1.5.20-5
 - rebuilt with GCC 4.1.0
 
