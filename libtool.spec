@@ -4,7 +4,7 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release:    1
+Release:    2
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -62,6 +62,7 @@ rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
 Summary:	Tools needed for development using the GNU Libtool Dynamic Module Loader
 Group:		Development/Libraries
 Requires:	libtool-ltdl = %{version}-%{release}
+License:    LGPL
 
 %description ltdl-devel
 Static libraries and header files for development with ltdl.
@@ -140,6 +141,9 @@ fi
 
 
 %changelog
+* Mon Feb 06 2006 Karsten Hopp <karsten@redhat.de> 1.5.22-2
+- libtool-ltdl-devel is LGPL (#168075)
+
 * Tue Dec 20 2005 Karsten Hopp <karsten@redhat.de> 1.5.22-1
 - update to 1.5.22, most prominent fixes are:
   - Fix 1.5 regression that caused linking a program `-static' to also
