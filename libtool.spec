@@ -4,7 +4,7 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release:    2.1
+Release:    2.2
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -141,6 +141,9 @@ fi
 
 
 %changelog
+* Fri Feb 10 2006 Jesse Keating <jkeating@redhat.com> - 1.5.22-2.2
+- bump again for double-long bug on ppc(64)
+
 * Tue Feb 07 2006 Jesse Keating <jkeating@redhat.com> - 1.5.22-2.1
 - rebuilt for new gcc4.1 snapshot and glibc changes
 
