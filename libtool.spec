@@ -4,7 +4,7 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release:    	3
+Release:  	4
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -141,6 +141,9 @@ fi
 
 
 %changelog
+* Tue Jun 06 2006 Karsten Hopp <karsten@redhat.de> 1.5.22-4
+- don't warn when /etc/ld.so.conf.d/*.conf doesn't exist (p.e. in mock)
+
 * Fri May 26 2006 Jakub Jelinek <jakub@redhat.com> 1.5.22-3
 - rebuilt with GCC 4.1.0
 
