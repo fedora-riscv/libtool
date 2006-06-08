@@ -1,6 +1,6 @@
---- libtool-1.5.14/libtool.m4.multilib	2005-02-12 12:18:34.000000000 +0000
-+++ libtool-1.5.14/libtool.m4	2005-02-15 08:48:42.189498479 +0000
-@@ -1456,10 +1456,27 @@
+--- libtool-1.5.22/libtool.m4.multilib	2005-12-18 22:53:17.000000000 +0100
++++ libtool-1.5.22/libtool.m4	2006-06-08 11:12:46.000000000 +0200
+@@ -1572,10 +1572,27 @@
    # before this can be enabled.
    hardcode_into_libs=yes
  
@@ -23,8 +23,9 @@
 +
    # Append ld.so.conf contents to the search path
    if test -f /etc/ld.so.conf; then
-     lt_ld_extra=`awk '/^include / { system(sprintf("cd /etc; cat %s 2>/dev/null", \[$]2)); skip = 1; } { if (!skip) print \[$]0; skip = 0; }' < /etc/ld.so.conf | $SED -e 's/#.*//;s/[:,	]/ /g;s/=[^=]*$//;s/=[^= ]* / /g;/^$/d' | tr '\n' ' '`
+-    lt_ld_extra=`awk '/^include / { system(sprintf("cd /etc; cat %s", \[$]2)); skip = 1; } { if (!skip) print \[$]0; skip = 0; }' < /etc/ld.so.conf | $SED -e 's/#.*//;s/[:,	]/ /g;s/=[^=]*$//;s/=[^= ]* / /g;/^$/d' | tr '\n' ' '`
 -    sys_lib_dlsearch_path_spec="/lib /usr/lib $lt_ld_extra"
++    lt_ld_extra=`awk '/^include / { system(sprintf("cd /etc; cat %s 2>/dev/null", \[$]2)); skip = 1; } { if (!skip) print \[$]0; skip = 0; }' < /etc/ld.so.conf | $SED -e 's/#.*//;s/[:,	]/ /g;s/=[^=]*$//;s/=[^= ]* / /g;/^$/d' | tr '\n' ' '`
 +    sys_lib_dlsearch_path_spec="/lib${libsuff} /usr/lib${libsuff} $lt_ld_extra"
    fi
  
