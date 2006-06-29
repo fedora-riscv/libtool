@@ -4,13 +4,17 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release:  	4
+Release:  	5
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
 URL:		http://www.gnu.org/software/libtool/
 BuildRoot:	%{_tmppath}/%{name}-root
 Patch1:		libtool-1.5.18-multilib.patch
+
+# Remove in libtool-1.5.23:
+Patch2:		libtool-1.5.22-misc.patch
+
 PreReq:		/sbin/install-info
 BuildRequires:	autoconf >= 2.59, automake >= 1.9.2, texinfo
 # make sure we can configure all supported langs
@@ -72,6 +76,7 @@ Static libraries and header files for development with ltdl.
 %prep
 %setup -n libtool-%{upstream_version} -q
 %patch1 -p1 -b .multilib
+%patch2 -p1
 
 %build
 
@@ -141,6 +146,9 @@ fi
 
 
 %changelog
+* Thu Jun 29 2006 Karsten Hopp <karsten@redhat.de> 1.5.22-5
+- miscellaneous upstream fixes
+
 * Tue Jun 06 2006 Karsten Hopp <karsten@redhat.de> 1.5.22-4
 - don't warn when /etc/ld.so.conf.d/*.conf doesn't exist (p.e. in mock)
 
