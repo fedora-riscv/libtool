@@ -1,10 +1,9 @@
 %define upstream_version 1.5.22
-%define gcc_version %(gcc -dumpversion)
 
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release:  	5
+Release:  	6
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -15,13 +14,14 @@ Patch1:		libtool-1.5.18-multilib.patch
 # Remove in libtool-1.5.23:
 Patch2:		libtool-1.5.22-misc.patch
 
+Patch3:		libtool-1.5.22-anygcc.patch
+
 PreReq:		/sbin/install-info
 BuildRequires:	autoconf >= 2.59, automake >= 1.9.2, texinfo
 # make sure we can configure all supported langs
 BuildRequires:	gcc, gcc-c++, libstdc++-devel, gcc-gfortran, gcc-java
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
-Requires:	gcc = %{gcc_version}
 Requires:	autoconf >= 2.50, automake >= 1.4
 
 %description
@@ -77,6 +77,7 @@ Static libraries and header files for development with ltdl.
 %setup -n libtool-%{upstream_version} -q
 %patch1 -p1 -b .multilib
 %patch2 -p1
+%patch3 -p1 -b .anygcc
 
 %build
 
@@ -146,6 +147,9 @@ fi
 
 
 %changelog
+* Thu Jun 29 2006 Karsten Hopp <karsten@redhat.de> 1.5.22-6
+- detect gcc path at runtime instead of requiring one specific version
+
 * Thu Jun 29 2006 Karsten Hopp <karsten@redhat.de> 1.5.22-5
 - miscellaneous upstream fixes
 
