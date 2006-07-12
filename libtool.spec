@@ -3,7 +3,7 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release:  	6
+Release:  	6.1
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -147,6 +147,9 @@ fi
 
 
 %changelog
+* Wed Jul 12 2006 Jesse Keating <jkeating@redhat.com> - 1.5.22-6.1
+- rebuild
+
 * Thu Jun 29 2006 Karsten Hopp <karsten@redhat.de> 1.5.22-6
 - detect gcc path at runtime instead of requiring one specific version
 
