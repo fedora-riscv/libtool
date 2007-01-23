@@ -3,7 +3,7 @@
 Summary:	The GNU Portable Library Tool
 Name:		libtool
 Version:	%{upstream_version}
-Release:  	6.1
+Release:  	8
 License:	GPL
 Group:		Development/Tools
 Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -16,6 +16,14 @@ Patch2:		libtool-1.5.22-misc.patch
 
 Patch3:		libtool-1.5.22-anygcc.patch
 
+# skip over lines in /etc/ld.so.conf.d/* which don't look like absolute paths (p.e. files from kernel-xen):
+Patch4:     libtool-1.5.22-ldconfigvars.patch
+
+Patch5:     libtool-1.5.22-configupdate-217166.patch
+
+# don't  read .la file in current working directory, root might get tricked
+# into running a prepared binary in that directory:
+Patch6:     libtool-1.5.22-relativepath.patch
 PreReq:		/sbin/install-info
 BuildRequires:	autoconf >= 2.59, automake >= 1.9.2, texinfo
 # make sure we can configure all supported langs
@@ -78,6 +86,9 @@ Static libraries and header files for development with ltdl.
 %patch1 -p1 -b .multilib
 %patch2 -p1
 %patch3 -p1 -b .anygcc
+%patch4 -p1 -b .rh1
+%patch5 -p1 -b .rh2
+%patch6 -p1 -b .automake110
 
 %build
 
@@ -108,7 +119,7 @@ rm -rf %{buildroot}
 
 
 %post
-/sbin/install-info %{_infodir}/libtool.info.gz %{_infodir}/dir
+/sbin/install-info %{_infodir}/libtool.info.gz %{_infodir}/dir || :
 
 %post ltdl -p /sbin/ldconfig
 
@@ -116,7 +127,7 @@ rm -rf %{buildroot}
 
 %preun
 if [ "$1" = 0 ]; then
-	/sbin/install-info --delete %{_infodir}/libtool.info.gz %{_infodir}/dir
+	/sbin/install-info --delete %{_infodir}/libtool.info.gz %{_infodir}/dir || :
 fi
 
 %postun ltdl -p /sbin/ldconfig
@@ -147,6 +158,15 @@ fi
 
 
 %changelog
+* Mon Jan 22 2007 Karsten Hopp <karsten@redhat.com> 1.5.22-8
+- don't abort (un)install scriptlets when _excludedocs is set (#223708)
+
+* Thu Dec 07 2006 Karsten Hopp <karsten@redhat.com> 1.5.22-7
+- update config.guess, config.sub with newer files from automake-1.10
+- skip over lines in /etc/ld.so.conf.d/* which don't look like absolute paths 
+  (p.e. files from kernel-xen). This avoids having unwanted relative paths in 
+  lib_search_path
+
 * Wed Jul 12 2006 Jesse Keating <jkeating@redhat.com> - 1.5.22-6.1
 - rebuild
 
