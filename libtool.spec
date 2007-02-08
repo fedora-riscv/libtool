@@ -43,9 +43,10 @@ If you are developing programs which will use shared libraries, but do not use
 the rest of the GNU Autotools (such as GNU Autoconf and GNU Automake), you
 should install the libtool package.
 
-The libtool package also includes all files needed to integrate the GNU Portable
-Library Tool (libtool) and the GNU Libtool Dynamic Module Loader (ltdl) into a
-package built using the GNU Autotools (including GNU Autoconf and GNU Automake).
+The libtool package also includes all files needed to integrate the GNU 
+Portable Library Tool (libtool) and the GNU Libtool Dynamic Module Loader
+(ltdl) into a package built using the GNU Autotools (including GNU Autoconf
+and GNU Automake).
 
 This package includes a modification from the original GNU Libtool to allow
 support for multi-architecture systems, such as the AMD64 Opteron and the Intel 
@@ -57,7 +58,7 @@ support for multi-architecture systems, such as the AMD64 Opteron and the Intel
 Summary:  Runtime libraries for GNU Libtool Dynamic Module Loader
 Group:    System Environment/Libraries
 Provides: libtool-libs = %{version}-%{release}
-Obsoletes: libtool-libs
+Obsoletes: libtool-libs < 1.5.20
 License:  LGPL
 
 %description ltdl
@@ -496,7 +497,7 @@ fi
 - add prereqs for m4 and perl inorder to run autoconf/automake.
 
 * Mon Feb 28 2000 Jeff Johnson <jbj@redhat.com>
-- functional /usr/doc/libtool-*/demo by end-user %post procedure (#9719).
+- functional /usr/doc/libtool-*/demo by end-user %%post procedure (#9719).
 
 * Wed Dec 22 1999 Jeff Johnson <jbj@redhat.com>
 - update to 1.3.4.
