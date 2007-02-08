@@ -1,20 +1,22 @@
 %define upstream_version 1.5.22
 
-Summary:	The GNU Portable Library Tool
-Name:		libtool
-Version:	%{upstream_version}
-Release:  	8
-License:	GPL
-Group:		Development/Tools
-Source:		http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
-URL:		http://www.gnu.org/software/libtool/
-BuildRoot:	%{_tmppath}/%{name}-root
-Patch1:		libtool-1.5.18-multilib.patch
+Summary: The GNU Portable Library Tool
+Name:    libtool
+Version: %{upstream_version}
+Release: 9
+License: GPL
+Group:   Development/Tools
+Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
+URL:     http://www.gnu.org/software/libtool/
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Requires(post):  /sbin/install-info
+Requires(preun): /sbin/install-info
+Patch1:  libtool-1.5.18-multilib.patch
 
 # Remove in libtool-1.5.23:
-Patch2:		libtool-1.5.22-misc.patch
+Patch2:  libtool-1.5.22-misc.patch
 
-Patch3:		libtool-1.5.22-anygcc.patch
+Patch3:  libtool-1.5.22-anygcc.patch
 
 # skip over lines in /etc/ld.so.conf.d/* which don't look like absolute paths (p.e. files from kernel-xen):
 Patch4:     libtool-1.5.22-ldconfigvars.patch
@@ -24,13 +26,12 @@ Patch5:     libtool-1.5.22-configupdate-217166.patch
 # don't  read .la file in current working directory, root might get tricked
 # into running a prepared binary in that directory:
 Patch6:     libtool-1.5.22-relativepath.patch
-PreReq:		/sbin/install-info
-BuildRequires:	autoconf >= 2.59, automake >= 1.9.2, texinfo
+BuildRequires: autoconf >= 2.59, automake >= 1.9.2, texinfo
 # make sure we can configure all supported langs
-BuildRequires:	gcc, gcc-c++, libstdc++-devel, gcc-gfortran, gcc-java
+BuildRequires: gcc, gcc-c++, libstdc++-devel, gcc-gfortran, gcc-java
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
-Requires:	autoconf >= 2.50, automake >= 1.4
+Requires: autoconf >= 2.50, automake >= 1.4
 
 %description
 GNU Libtool is a set of shell scripts which automatically configure UNIX and
@@ -53,11 +54,11 @@ support for multi-architecture systems, such as the AMD64 Opteron and the Intel
 
 
 %package ltdl
-Summary:	Runtime libraries for GNU Libtool Dynamic Module Loader
-Group:		System Environment/Libraries
-Provides:	libtool-libs = %{version}-%{release}
-Obsoletes:	libtool-libs
-License:    LGPL
+Summary:  Runtime libraries for GNU Libtool Dynamic Module Loader
+Group:    System Environment/Libraries
+Provides: libtool-libs = %{version}-%{release}
+Obsoletes: libtool-libs
+License:  LGPL
 
 %description ltdl
 The libtool-ltdl package contains the GNU Libtool Dynamic Module Loader, a
@@ -71,10 +72,10 @@ rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
 
 
 %package ltdl-devel
-Summary:	Tools needed for development using the GNU Libtool Dynamic Module Loader
-Group:		Development/Libraries
-Requires:	libtool-ltdl = %{version}-%{release}
-License:    LGPL
+Summary: Tools needed for development using the GNU Libtool Dynamic Module Loader
+Group:    Development/Libraries
+Requires: libtool-ltdl = %{version}-%{release}
+License:  LGPL
 
 %description ltdl-devel
 Static libraries and header files for development with ltdl.
@@ -84,11 +85,11 @@ Static libraries and header files for development with ltdl.
 %prep
 %setup -n libtool-%{upstream_version} -q
 %patch1 -p1 -b .multilib
-%patch2 -p1
+%patch2 -p1 -b .misc
 %patch3 -p1 -b .anygcc
-%patch4 -p1 -b .rh1
-%patch5 -p1 -b .rh2
-%patch6 -p1 -b .automake110
+%patch4 -p1 -b .ldconfigvars
+%patch5 -p1 -b .automake110
+%patch6 -p1 -b .relativepath
 
 %build
 
@@ -127,7 +128,7 @@ rm -rf %{buildroot}
 
 %preun
 if [ "$1" = 0 ]; then
-	/sbin/install-info --delete %{_infodir}/libtool.info.gz %{_infodir}/dir || :
+   /sbin/install-info --delete %{_infodir}/libtool.info.gz %{_infodir}/dir || :
 fi
 
 %postun ltdl -p /sbin/ldconfig
@@ -158,6 +159,11 @@ fi
 
 
 %changelog
+* Thu Feb 08 2007 Karsten Hopp <karsten@redhat.com> 1.5.22-9
+- fix ltdl file open (#225116)
+- fix lt_unset usage (#227454)
+- spec file cleanups for merge review
+
 * Mon Jan 22 2007 Karsten Hopp <karsten@redhat.com> 1.5.22-8
 - don't abort (un)install scriptlets when _excludedocs is set (#223708)
 
