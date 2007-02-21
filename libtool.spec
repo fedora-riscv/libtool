@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: %{upstream_version}
-Release: 9
+Release: 10
 License: GPL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -60,6 +60,8 @@ Group:    System Environment/Libraries
 Provides: libtool-libs = %{version}-%{release}
 Obsoletes: libtool-libs < 1.5.20
 License:  LGPL
+Requires(post):  /sbin/ldconfig
+Requires(postun):  /sbin/ldconfig
 
 %description ltdl
 The libtool-ltdl package contains the GNU Libtool Dynamic Module Loader, a
@@ -101,7 +103,8 @@ export CXX=g++
 export F77=gfortran
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
 %configure
-make
+# build not smp safe:
+make #%{?_smp_mflags}
 
 %check
 make check VERBOSE=yes > make_check.log 2>&1 || (cat make_check.log && false)
@@ -110,7 +113,7 @@ make check VERBOSE=yes > make_check.log 2>&1 || (cat make_check.log && false)
 
 %install
 rm -rf %{buildroot}
-%makeinstall
+make install DESTDIR=$RPM_BUILD_ROOT
 rm -f %{buildroot}%{_infodir}/dir
 
 
@@ -160,6 +163,9 @@ fi
 
 
 %changelog
+* Wed Feb 21 2007 Karsten Hopp <karsten@redhat.com> 1.5.22-10
+- fix libtool-ltdl post/postun requirements
+
 * Thu Feb 08 2007 Karsten Hopp <karsten@redhat.com> 1.5.22-9
 - fix ltdl file open (#225116)
 - fix lt_unset usage (#227454)
