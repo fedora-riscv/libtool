@@ -16,7 +16,7 @@ Patch1:  libtool-1.5.18-multilib.patch
 # Remove in libtool-1.5.23:
 Patch2:  libtool-1.5.22-misc.patch
 
-Patch3:  libtool-1.5.22-anygcc1.patch
+#Patch3:  libtool-1.5.22-anygcc1.patch
 
 # skip over lines in /etc/ld.so.conf.d/* which don't look like absolute paths (p.e. files from kernel-xen):
 Patch4:     libtool-1.5.22-ldconfigvars.patch
@@ -89,7 +89,7 @@ Static libraries and header files for development with ltdl.
 %setup -n libtool-%{upstream_version} -q
 %patch1 -p1 -b .multilib
 %patch2 -p1 -b .misc
-%patch3 -p1 -b .anygcc
+#patch3 -p1 -b .anygcc
 %patch4 -p1 -b .ldconfigvars
 %patch5 -p1 -b .automake110
 %patch6 -p1 -b .relativepath
