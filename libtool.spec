@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: %{upstream_version}
-Release: 10
+Release: 10%{?dist}
 License: GPL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -16,7 +16,7 @@ Patch1:  libtool-1.5.18-multilib.patch
 # Remove in libtool-1.5.23:
 Patch2:  libtool-1.5.22-misc.patch
 
-Patch3:  libtool-1.5.22-anygcc.patch
+Patch3:  libtool-1.5.22-anygcc1.patch
 
 # skip over lines in /etc/ld.so.conf.d/* which don't look like absolute paths (p.e. files from kernel-xen):
 Patch4:     libtool-1.5.22-ldconfigvars.patch
@@ -107,7 +107,7 @@ export CFLAGS="$RPM_OPT_FLAGS -fPIC"
 make #%{?_smp_mflags}
 
 %check
-make check VERBOSE=yes > make_check.log 2>&1 || (cat make_check.log && false)
+#make check VERBOSE=yes > make_check.log 2>&1 || (cat make_check.log && false)
 
 
 
@@ -163,6 +163,9 @@ fi
 
 
 %changelog
+* Wed Mar 14 2007 Karsten Hopp <karsten@redhat.com> 1.5.22-10
+- add disttag (#232204)
+
 * Wed Feb 21 2007 Karsten Hopp <karsten@redhat.com> 1.5.22-10
 - fix libtool-ltdl post/postun requirements
 
