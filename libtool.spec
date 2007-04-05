@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: %{upstream_version}
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: GPL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -102,7 +102,8 @@ export CC=gcc
 export CXX=g++
 export F77=gfortran
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
-%configure
+# dumb redhat-rpm-config replaces config.{sub,guess} with ancient ones in %%configure, use ./configure instead:
+./configure --prefix=%{_prefix} --exec-prefix=%{_prefix} --bindir=%{_bindir} --sbindir=%{_sbindir} --sysconfdir=%{_sysconfdir} --datadir=%{_datadir} --includedir=%{_includedir} --libdir=%{_libdir} --libexecdir=%{_libexecdir} --localstatedir=%{_localstatedir} --mandir=%{_mandir} --infodir=%{_infodir}
 # build not smp safe:
 make #%{?_smp_mflags}
 
@@ -163,6 +164,10 @@ fi
 
 
 %changelog
+* Thu Apr 05 2007 Karsten Hopp <karsten@redhat.com> 1.5.22-11
+- use ./configure so that config.{sub,guess} will not be replaced with ancient
+  version of those files (#234778)
+
 * Wed Mar 14 2007 Karsten Hopp <karsten@redhat.com> 1.5.22-10
 - add disttag (#232204)
 
