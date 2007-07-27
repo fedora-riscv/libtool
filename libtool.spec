@@ -1,31 +1,21 @@
-%define upstream_version 1.5.22
+%define upstream_version 1.5.24
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: %{upstream_version}
-Release: 11%{?dist}
+Release: 1%{?dist}
 License: GPL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
 URL:     http://www.gnu.org/software/libtool/
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
-Patch1:  libtool-1.5.18-multilib.patch
-
-# Remove in libtool-1.5.23:
-Patch2:  libtool-1.5.22-misc.patch
-
-#Patch3:  libtool-1.5.22-anygcc1.patch
-
-# skip over lines in /etc/ld.so.conf.d/* which don't look like absolute paths (p.e. files from kernel-xen):
-Patch4:     libtool-1.5.22-ldconfigvars.patch
-
-Patch5:     libtool-1.5.22-configupdate-217166.patch
+Patch1:  libtool-1.5.24-multilib.patch
 
 # don't  read .la file in current working directory, root might get tricked
 # into running a prepared binary in that directory:
-Patch6:     libtool-1.5.22-relativepath.patch
+Patch2:  libtool-1.5.24-relativepath.patch
 BuildRequires: autoconf >= 2.59, automake >= 1.9.2, texinfo
 # make sure we can configure all supported langs
 BuildRequires: gcc, gcc-c++, libstdc++-devel, gcc-gfortran, gcc-java
@@ -87,12 +77,8 @@ Static libraries and header files for development with ltdl.
 
 %prep
 %setup -n libtool-%{upstream_version} -q
-%patch1 -p1 -b .multilib
-%patch2 -p1 -b .misc
-#patch3 -p1 -b .anygcc
-%patch4 -p1 -b .ldconfigvars
-%patch5 -p1 -b .automake110
-%patch6 -p1 -b .relativepath
+%patch1 -p1 
+%patch2 -p1
 
 %build
 
@@ -164,6 +150,9 @@ fi
 
 
 %changelog
+* Tue Jul 24 2007 Karsten Hopp <karsten@redhat.com> 1.5.24-1
+- update to libtool 1.5.24
+
 * Thu Apr 05 2007 Karsten Hopp <karsten@redhat.com> 1.5.22-11
 - use ./configure so that config.{sub,guess} will not be replaced with ancient
   version of those files (#234778)
