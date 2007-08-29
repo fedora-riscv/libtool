@@ -3,8 +3,8 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: %{upstream_version}
-Release: 2%{?dist}
-License: GPL
+Release: 3%{?dist}
+License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
 URL:     http://www.gnu.org/software/libtool/
@@ -150,6 +150,9 @@ fi
 
 
 %changelog
+* Wed Aug 29 2007 Karsten Hopp <karsten@redhat.com> 1.5.24-3
+- fix license tag
+
 * Wed Aug 29 2007 Fedora Release Engineering <rel-eng at fedoraproject dot org> - 1.5.24-2
 - Rebuild for selinux ppc32 issue.
 
