@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: %{upstream_version}
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -22,6 +22,7 @@ BuildRequires: gcc, gcc-c++, libstdc++-devel, gcc-gfortran, gcc-java
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
 Requires: autoconf >= 2.50, automake >= 1.4
+Requires: gcc = %{gcc_version}
 
 %description
 GNU Libtool is a set of shell scripts which automatically configure UNIX and
@@ -150,6 +151,10 @@ fi
 
 
 %changelog
+* Wed Jan 23 2008 Karsten Hopp <karsten@redhat.com> 1.5.24-4
+- require specific gcc version as that path is hardcoded in libtool
+  (#429880)
+
 * Wed Aug 29 2007 Karsten Hopp <karsten@redhat.com> 1.5.24-3
 - fix license tag
 
