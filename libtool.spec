@@ -1,5 +1,5 @@
 %define upstream_version 1.5.24
-%define gcc_version %(gcc -dumpversion)
+%define gcc_version 4.1.2
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
@@ -10,7 +10,6 @@ Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
 URL:     http://www.gnu.org/software/libtool/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
-Requires: gcc
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 Patch1:  libtool-1.5.24-multilib.patch
