@@ -1,10 +1,10 @@
 %define upstream_version 1.5.24
-%define gcc_version 4.1.2
+%define gcc_version 4.3.0
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: %{upstream_version}
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
@@ -152,6 +152,9 @@ fi
 
 
 %changelog
+* Wed Jan 30 2008 Bill Nottingham <notting@redhat.coM> 1.5.24-6
+- rebuild for new gcc
+
 * Wed Jan 23 2008 Karsten Hopp <karsten@redhat.com> 1.5.24-5
 - add missing define
 
