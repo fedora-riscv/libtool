@@ -1,13 +1,12 @@
-%define upstream_version 1.5.24
 %define gcc_version 4.3.0
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
-Version: %{upstream_version}
-Release: 6%{?dist}
+Version: 1.5.26
+Release: 1%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
-Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{upstream_version}.tar.gz
+Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
 URL:     http://www.gnu.org/software/libtool/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 Requires(post):  /sbin/install-info
@@ -17,12 +16,13 @@ Patch1:  libtool-1.5.24-multilib.patch
 # don't  read .la file in current working directory, root might get tricked
 # into running a prepared binary in that directory:
 Patch2:  libtool-1.5.24-relativepath.patch
+
 BuildRequires: autoconf >= 2.59, automake >= 1.9.2, texinfo
+Requires: autoconf >= 2.58, automake >= 1.4
 # make sure we can configure all supported langs
 BuildRequires: gcc, gcc-c++, libstdc++-devel, gcc-gfortran, gcc-java
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
-Requires: autoconf >= 2.50, automake >= 1.4
 Requires: gcc = %{gcc_version}
 
 %description
@@ -78,7 +78,7 @@ Static libraries and header files for development with ltdl.
 
 
 %prep
-%setup -n libtool-%{upstream_version} -q
+%setup -n libtool-%{version} -q
 %patch1 -p1 
 %patch2 -p1
 
@@ -152,7 +152,10 @@ fi
 
 
 %changelog
-* Wed Jan 30 2008 Bill Nottingham <notting@redhat.coM> 1.5.24-6
+* Tue May 20 2008 Stepan Kasal <skasal@redhat.com> 1.5.26-1
+- new upstream version, requires autoconf >= 2.58
+
+* Wed Jan 30 2008 Bill Nottingham <notting@redhat.com> 1.5.24-6
 - rebuild for new gcc
 
 * Wed Jan 23 2008 Karsten Hopp <karsten@redhat.com> 1.5.24-5
