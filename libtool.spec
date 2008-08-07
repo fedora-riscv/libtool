@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 1.5.26
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
@@ -51,7 +51,7 @@ Summary:  Runtime libraries for GNU Libtool Dynamic Module Loader
 Group:    System Environment/Libraries
 Provides: libtool-libs = %{version}-%{release}
 Obsoletes: libtool-libs < 1.5.20
-License:  LGPL
+License:  LGPLv2+
 Requires(post):  /sbin/ldconfig
 Requires(postun):  /sbin/ldconfig
 
@@ -70,7 +70,7 @@ rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
 Summary: Tools needed for development using the GNU Libtool Dynamic Module Loader
 Group:    Development/Libraries
 Requires: libtool-ltdl = %{version}-%{release}
-License:  LGPL
+License:  LGPLv2+
 
 %description ltdl-devel
 Static libraries and header files for development with ltdl.
@@ -152,6 +152,9 @@ fi
 
 
 %changelog
+* Thu Aug  7 2008 Tom "spot" Callaway <tcallawa@redhat.com> 1.5.26-3
+- fix license tag
+
 * Mon Jun 09 2008 Dennis Gilmore <dennis@ausil.us> 1.5.26-2
 - build against gcc 4.3.1
 
