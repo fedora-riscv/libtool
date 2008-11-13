@@ -2,20 +2,15 @@
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
-Version: 1.5.26
-Release: 4%{?dist}
+Version: 2.2.6
+Release: 1%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
-Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
+Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.gz
 URL:     http://www.gnu.org/software/libtool/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
-Patch1:  libtool-1.5.24-multilib.patch
-
-# don't  read .la file in current working directory, root might get tricked
-# into running a prepared binary in that directory:
-Patch2:  libtool-1.5.24-relativepath.patch
 
 BuildRequires: autoconf >= 2.59, automake >= 1.9.2, texinfo
 Requires: autoconf >= 2.58, automake >= 1.4
@@ -40,17 +35,10 @@ Portable Library Tool (libtool) and the GNU Libtool Dynamic Module Loader
 (ltdl) into a package built using the GNU Autotools (including GNU Autoconf
 and GNU Automake).
 
-This package includes a modification from the original GNU Libtool to allow
-support for multi-architecture systems, such as the AMD64 Opteron and the Intel 
-64-bit Xeon.
-
-
-
 %package ltdl
 Summary:  Runtime libraries for GNU Libtool Dynamic Module Loader
 Group:    System Environment/Libraries
-Provides: libtool-libs = %{version}-%{release}
-Obsoletes: libtool-libs < 1.5.20
+Provides: %{name}-libs = %{version}-%{release}
 License:  LGPLv2+
 Requires(post):  /sbin/ldconfig
 Requires(postun):  /sbin/ldconfig
@@ -61,15 +49,15 @@ library that provides a consistent, portable interface which simplifies the
 process of using dynamic modules.
 
 These runtime libraries are needed by programs that link directly to the
-system-installed ltdl libraries; they are not needed by software built using the
-rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
+system-installed ltdl libraries; they are not needed by software built using 
+the rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
 
 
 
 %package ltdl-devel
 Summary: Tools needed for development using the GNU Libtool Dynamic Module Loader
 Group:    Development/Libraries
-Requires: libtool-ltdl = %{version}-%{release}
+Requires: %{name}-ltdl = %{version}-%{release}
 License:  LGPLv2+
 
 %description ltdl-devel
@@ -79,8 +67,6 @@ Static libraries and header files for development with ltdl.
 
 %prep
 %setup -n libtool-%{version} -q
-%patch1 -p1 
-%patch2 -p1
 
 %build
 
@@ -90,7 +76,8 @@ export CC=gcc
 export CXX=g++
 export F77=gfortran
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
-# dumb redhat-rpm-config replaces config.{sub,guess} with ancient ones in %%configure, use ./configure instead:
+# don't conflict with libtool-1.5, use own directory:
+sed -e 's/pkgdatadir="\\${datadir}\/\$PACKAGE"/pkgdatadir="\\${datadir}\/\${PACKAGE}"/' configure > configure.tmp; mv -f configure.tmp configure; chmod a+x configure
 ./configure --prefix=%{_prefix} --exec-prefix=%{_prefix} --bindir=%{_bindir} --sbindir=%{_sbindir} --sysconfdir=%{_sysconfdir} --datadir=%{_datadir} --includedir=%{_includedir} --libdir=%{_libdir} --libexecdir=%{_libexecdir} --localstatedir=%{_localstatedir} --mandir=%{_mandir} --infodir=%{_infodir}
 # build not smp safe:
 make #%{?_smp_mflags}
@@ -99,12 +86,11 @@ make #%{?_smp_mflags}
 #make check VERBOSE=yes > make_check.log 2>&1 || (cat make_check.log && false)
 
 
-
 %install
 rm -rf %{buildroot}
 make install DESTDIR=$RPM_BUILD_ROOT
 rm -f %{buildroot}%{_infodir}/dir
-
+rm -f %{buildroot}%{_libdir}/libltdl.la  %{buildroot}%{_libdir}/libltdl.a
 
 
 %clean
@@ -130,11 +116,12 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING NEWS README THANKS TODO ChangeLog
-%{_infodir}/libtool.info.gz
+%doc AUTHORS COPYING NEWS README THANKS TODO ChangeLog*
+%{_infodir}/libtool.info*.gz
 %{_bindir}/libtool
 %{_bindir}/libtoolize
 %{_datadir}/aclocal/*.m4
+%exclude %{_datadir}/libtool/libltdl
 %{_datadir}/libtool
 
 %files ltdl
@@ -144,14 +131,19 @@ fi
 
 %files ltdl-devel
 %defattr(-,root,root)
-%{_libdir}/libltdl.a
-%{_libdir}/libltdl.la
+%{_datadir}/libtool/libltdl
 %{_libdir}/libltdl.so
 %{_includedir}/ltdl.h
+%{_includedir}/libltdl/lt_dlloader.h
+%{_includedir}/libltdl/lt_error.h
+%{_includedir}/libltdl/lt_system.h
 
 
 
 %changelog
+* Thu Nov 13 2008 Karsten Hopp <karsten@redhat.com> 2.2.6-1
+- update to 2.2.6a
+
 * Fri Aug 29 2008 Dennis Gilmore <dennis@ausil.us> 1.5.26-4
 - rebuild for gcc-4.3.2
 
