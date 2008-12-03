@@ -3,11 +3,12 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.gz
 URL:     http://www.gnu.org/software/libtool/
+Patch0:  libtool-2.2.6-echo.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -67,6 +68,7 @@ Static libraries and header files for development with ltdl.
 
 %prep
 %setup -n libtool-%{version} -q
+%patch0 -p 1 -b .echo
 
 %build
 
@@ -141,6 +143,9 @@ fi
 
 
 %changelog
+* Wed Dec  3 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> 2.2.6-3
+- Hopefully fix all the build errors we've been seeing (#474330)
+
 * Wed Dec 03 2008 Karsten Hopp <karsten@redhat.com> 2.2.6-2
 - add Requires: sed  (Ignacio Vazquez-Abrams)
 
