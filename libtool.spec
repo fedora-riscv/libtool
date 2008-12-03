@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.gz
@@ -13,7 +13,7 @@ Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
 BuildRequires: autoconf >= 2.59, automake >= 1.9.2, texinfo
-Requires: autoconf >= 2.58, automake >= 1.4
+Requires: autoconf >= 2.58, automake >= 1.4, sed
 # make sure we can configure all supported langs
 BuildRequires: gcc, gcc-c++, libstdc++-devel, gcc-gfortran, gcc-java
 # /usr/bin/libtool includes paths within gcc's versioned directories
@@ -141,6 +141,9 @@ fi
 
 
 %changelog
+* Wed Dec 03 2008 Karsten Hopp <karsten@redhat.com> 2.2.6-2
+- add Requires: sed  (Ignacio Vazquez-Abrams)
+
 * Thu Nov 13 2008 Karsten Hopp <karsten@redhat.com> 2.2.6-1
 - update to 2.2.6a
 
