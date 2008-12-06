@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.gz
@@ -134,13 +134,14 @@ fi
 %{_datadir}/libtool/libltdl
 %{_libdir}/libltdl.so
 %{_includedir}/ltdl.h
-%{_includedir}/libltdl/lt_dlloader.h
-%{_includedir}/libltdl/lt_error.h
-%{_includedir}/libltdl/lt_system.h
+%{_includedir}/libltdl
 
 
 
 %changelog
+* Sat Dec  6 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> 2.2.6-5
+- Own /usr/include/libltdl (#475004)
+
 * Wed Dec  3 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> 2.2.6-4
 - Well. THAT was pointless...
 
