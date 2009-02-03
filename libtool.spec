@@ -128,6 +128,7 @@ fi
 %defattr(-,root,root)
 %doc libltdl/COPYING.LIB libltdl/README
 %{_libdir}/libltdl.so.*
+%{_datadir}/libtool
 
 %files ltdl-devel
 %defattr(-,root,root)
@@ -139,6 +140,9 @@ fi
 
 
 %changelog
+* Wed Jan 28 2009 Karsten Hopp <karsten@redhat.com> 2.2.6-6
+- libtool-ltdl now owns /usr/share/libtool (#474672)
+
 * Sat Dec  6 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> 2.2.6-5
 - Own /usr/include/libltdl (#475004)
 
