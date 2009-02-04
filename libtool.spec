@@ -1,9 +1,9 @@
-%define gcc_version 4.4.0
+%define gcc_version 4.3.2
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.gz
@@ -128,7 +128,7 @@ fi
 %defattr(-,root,root)
 %doc libltdl/COPYING.LIB libltdl/README
 %{_libdir}/libltdl.so.*
-%{_datadir}/libtool
+%dir %{_datadir}/libtool
 
 %files ltdl-devel
 %defattr(-,root,root)
@@ -140,6 +140,10 @@ fi
 
 
 %changelog
+* Wed Feb 04 2009 Karsten Hopp <karsten@redhat.com> 2.2.6-8
+- libtool-ltdl owns /usr/share/libtool, but not the config files
+  (#484088)
+
 * Wed Feb  4 2009 Jakub Jelinek <jakub@redhat.com> 2.2.6-7
 - rebuilt for gcc-4.4.0
 
