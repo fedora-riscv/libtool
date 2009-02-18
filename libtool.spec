@@ -3,10 +3,11 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.gz
+Patch0:  libtool-2.2.6a-rpath.patch
 URL:     http://www.gnu.org/software/libtool/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 Requires(post):  /sbin/install-info
@@ -67,6 +68,7 @@ Static libraries and header files for development with ltdl.
 
 %prep
 %setup -n libtool-%{version} -q
+%patch0 -p1 -b .rpath
 
 %build
 
@@ -140,6 +142,9 @@ fi
 
 
 %changelog
+* Wed Feb 18 2009 Karsten Hopp <karsten@redhat.com> 2.2.6-10
+- remove /lib64 and /usr/lib64 rpath
+
 * Fri Feb  6 2009 Jakub Jelinek <jakub@redhat.com> 2.2.6-9
 - rebuilt again for gcc-4.4.0
 
