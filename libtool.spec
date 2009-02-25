@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.gz
@@ -142,6 +142,9 @@ fi
 
 
 %changelog
+* Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.6-11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Wed Feb 18 2009 Karsten Hopp <karsten@redhat.com> 2.2.6-10
 - remove /lib64 and /usr/lib64 rpath
 
