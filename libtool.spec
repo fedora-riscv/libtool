@@ -3,10 +3,10 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
-Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.gz
+Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.lzma
 Patch0:  libtool-2.2.6a-rpath.patch
 URL:     http://www.gnu.org/software/libtool/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
@@ -142,6 +142,9 @@ fi
 
 
 %changelog
+* Wed Aug 12 2009 Ville Skyttä <ville.skytta@iki.fi> - 2.2.6-14
+- Use lzma compressed upstream tarball.
+
 * Sat Jul 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.6-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
