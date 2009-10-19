@@ -1,9 +1,9 @@
-%define gcc_version 4.4.1
+%define gcc_version 4.4.2
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.lzma
@@ -142,6 +142,9 @@ fi
 
 
 %changelog
+* Mon Oct 19 2009 Jakub Jelinek <jakub@redhat.com> 2.2.6-15
+- Rebuild for gcc 4.4.2
+
 * Wed Aug 12 2009 Ville Skyttä <ville.skytta@iki.fi> - 2.2.6-14
 - Use lzma compressed upstream tarball.
 
