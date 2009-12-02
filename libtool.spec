@@ -2,11 +2,11 @@
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
-Version: 2.2.6
-Release: 14%{?dist}
+Version: 2.2.6b
+Release: 1%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
-Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.lzma
+Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.lzma
 Patch0:  libtool-2.2.6a-rpath.patch
 URL:     http://www.gnu.org/software/libtool/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
@@ -142,6 +142,10 @@ fi
 
 
 %changelog
+* Tue Dec 01 2009 Karsten Hopp <karsten@redhat.com> 2.2.6b-1
+- update to 2.2.6b, fixes CVE-2009-3736:
+  libltdl may load and execute code from a library in the current directory
+
 * Wed Aug 12 2009 Ville Skyttä <ville.skytta@iki.fi> - 2.2.6-14
 - Use lzma compressed upstream tarball.
 
