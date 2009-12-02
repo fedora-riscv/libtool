@@ -2,11 +2,11 @@
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
-Version: 2.2.6b
-Release: 2%{?dist}
+Version: 2.2.6
+Release: 16%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
-Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.lzma
+Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}b.tar.lzma
 Patch0:  libtool-2.2.6a-rpath.patch
 URL:     http://www.gnu.org/software/libtool/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
@@ -142,6 +142,9 @@ fi
 
 
 %changelog
+* Wed Dec 02 2009 Karsten Hopp <karsten@redhat.com> 2.2.6-16
+- make sure that NVR is higher than previous version
+
 * Wed Dec 02 2009 Karsten Hopp <karsten@redhat.com> 2.2.6b-2
 - fix gcc version
 
