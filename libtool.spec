@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 1.5.26
-Release: 4%{?dist}
+Release: 4%{?dist}.1
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.gz
@@ -13,9 +13,7 @@ Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 Patch1:  libtool-1.5.24-multilib.patch
 
-# don't  read .la file in current working directory, root might get tricked
-# into running a prepared binary in that directory:
-Patch2:  libtool-1.5.24-relativepath.patch
+Patch2:  libtool-1.5.22-CVE-2009-3736.patch
 
 BuildRequires: autoconf >= 2.59, automake >= 1.9.2, texinfo
 Requires: autoconf >= 2.58, automake >= 1.4
@@ -152,6 +150,10 @@ fi
 
 
 %changelog
+* Wed Dec 02 2009 Karsten Hopp <karsten@redhat.com> 1.5.26-4.1
+- add fix for CVE-2009-3736:
+  libltdl may load and execute code from a library in the current directory
+
 * Fri Aug 29 2008 Dennis Gilmore <dennis@ausil.us> 1.5.26-4
 - rebuild for gcc-4.3.2
 
