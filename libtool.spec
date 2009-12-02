@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 16%{?dist}
+Release: 17%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}b.tar.lzma
@@ -67,7 +67,7 @@ Static libraries and header files for development with ltdl.
 
 
 %prep
-%setup -n libtool-%{version} -q
+%setup -n libtool-%{version}b -q
 %patch0 -p1 -b .rpath
 
 %build
@@ -142,6 +142,9 @@ fi
 
 
 %changelog
+* Wed Dec 02 2009 Karsten Hopp <karsten@redhat.com> 2.2.6-17
+- fix directory name used in libtool tarball
+
 * Wed Dec 02 2009 Karsten Hopp <karsten@redhat.com> 2.2.6-16
 - update to 2.2.6b, fixes CVE-2009-3736:
   libltdl may load and execute code from a library in the current directory
