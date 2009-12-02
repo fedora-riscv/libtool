@@ -1,12 +1,12 @@
-%define gcc_version 4.4.1
+%define gcc_version 4.4.0
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 11%{?dist}.1
+Release: 11%{?dist}.2
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
-Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.gz
+Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}b.tar.gz
 Patch0:  libtool-2.2.6a-rpath.patch
 URL:     http://www.gnu.org/software/libtool/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
@@ -67,7 +67,7 @@ Static libraries and header files for development with ltdl.
 
 
 %prep
-%setup -n libtool-%{version} -q
+%setup -n libtool-%{version}b -q
 %patch0 -p1 -b .rpath
 
 %build
@@ -142,6 +142,10 @@ fi
 
 
 %changelog
+* Wed Dec 02 2009 Karsten Hopp <karsten@redhat.com> 2.2.6-11.2
+- update to 2.2.6b, fixes CVE-2009-3736:
+  libltdl may load and execute code from a library in the current directory
+
 * Thu Jul 30 2009 Jakub Jelinek <jakub@redhat.com> 2.2.6-11.fc11.1
 - rebuilt against gcc-4.4.1
 
