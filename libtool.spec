@@ -1,9 +1,9 @@
-%define gcc_version 4.4.3
+%define gcc_version 4.4.4
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 18%{?dist}
+Release: 20%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}b.tar.lzma
@@ -83,9 +83,13 @@ sed -e 's/pkgdatadir="\\${datadir}\/\$PACKAGE"/pkgdatadir="\\${datadir}\/\${PACK
 ./configure --prefix=%{_prefix} --exec-prefix=%{_prefix} --bindir=%{_bindir} --sbindir=%{_sbindir} --sysconfdir=%{_sysconfdir} --datadir=%{_datadir} --includedir=%{_includedir} --libdir=%{_libdir} --libexecdir=%{_libexecdir} --localstatedir=%{_localstatedir} --mandir=%{_mandir} --infodir=%{_infodir}
 # build not smp safe:
 make #%{?_smp_mflags}
+for i in ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 ChangeLog.2002; do 
+  iconv -f ISO_8859-15 -t UTF8 $i > $i.tmp
+  mv -f $i.tmp $i
+done
 
 %check
-#make check VERBOSE=yes > make_check.log 2>&1 || (cat make_check.log && false)
+make check VERBOSE=yes > make_check.log 2>&1 || (cat make_check.log && false)
 
 
 %install
@@ -128,12 +132,13 @@ fi
 
 %files ltdl
 %defattr(-,root,root)
-%doc libltdl/COPYING.LIB libltdl/README
+%doc libltdl/COPYING.LIB
 %{_libdir}/libltdl.so.*
 %dir %{_datadir}/libtool
 
 %files ltdl-devel
 %defattr(-,root,root)
+%doc libltdl/README
 %{_datadir}/libtool/libltdl
 %{_libdir}/libltdl.so
 %{_includedir}/ltdl.h
@@ -142,6 +147,13 @@ fi
 
 
 %changelog
+* Sat May  1 2010 Jakub Jelinek <jakub@redhat.com> 2.2.6-20
+- rebuilt for gcc 4.4.4
+
+* Mon Apr 12 2010 Karsten Hopp <karsten@redhat.com> 2.2.6-19
+- enable selfcheck
+- convert changelog files to utf8 (#226050)
+
 * Thu Jan 21 2010 Jakub Jelinek <jakub@redhat.com> 2.2.6-18
 - rebuilt for gcc 4.4.3
 
