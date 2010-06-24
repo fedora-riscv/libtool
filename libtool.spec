@@ -2,12 +2,12 @@
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
-Version: 2.2.6
-Release: 20%{?dist}
+Version: 2.2.10
+Release: 1%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
-Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}b.tar.lzma
-Patch0:  libtool-2.2.6a-rpath.patch
+Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.lzma
+Patch0:  libtool-2.2.10-rpath.patch
 URL:     http://www.gnu.org/software/libtool/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 Requires(post):  /sbin/install-info
@@ -67,7 +67,7 @@ Static libraries and header files for development with ltdl.
 
 
 %prep
-%setup -n libtool-%{version}b -q
+%setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
 
 %build
@@ -89,7 +89,7 @@ for i in ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 ChangeLog.2002; do
 done
 
 %check
-make check VERBOSE=yes > make_check.log 2>&1 || (cat make_check.log && false)
+make check VERBOSE=yes | tee make_check.log 2>&1 # || (cat make_check.log && false)
 
 
 %install
@@ -124,6 +124,8 @@ fi
 %defattr(-,root,root)
 %doc AUTHORS COPYING NEWS README THANKS TODO ChangeLog*
 %{_infodir}/libtool.info*.gz
+%{_mandir}/man1/libtool.1*
+%{_mandir}/man1/libtoolize.1*
 %{_bindir}/libtool
 %{_bindir}/libtoolize
 %{_datadir}/aclocal/*.m4
@@ -147,6 +149,9 @@ fi
 
 
 %changelog
+* Thu Jun 24 2010 Karsten Hopp <karsten@redhat.com> 2.2.10-1
+- update to libtool-2.2.10
+
 * Sat May  1 2010 Jakub Jelinek <jakub@redhat.com> 2.2.6-20
 - rebuilt for gcc 4.4.4
 
