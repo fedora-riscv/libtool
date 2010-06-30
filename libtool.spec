@@ -1,9 +1,9 @@
-%define gcc_version 4.4.3
+%define gcc_version 4.4.4
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.2.6
-Release: 18%{?dist}
+Release: 18%{?dist}.1
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}b.tar.lzma
@@ -142,6 +142,9 @@ fi
 
 
 %changelog
+* Wed Jun 30 2010 Jakub Jelinek <jakub@redhat.com> 2.2.6-18.fc12.1
+- rebuilt for gcc 4.4.4
+
 * Thu Jan 21 2010 Jakub Jelinek <jakub@redhat.com> 2.2.6-18
 - rebuilt for gcc 4.4.3
 
