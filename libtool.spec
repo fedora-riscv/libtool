@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
@@ -149,6 +149,9 @@ fi
 
 
 %changelog
+* Tue Jun 28 2011 Peter Robinson <pbrobinson@gmail.com> - 2.4-6
+- actually update the hardwired gcc version
+
 * Tue Jun 28 2011 Peter Robinson <pbrobinson@gmail.com> - 2.4-5
 - Rebuild for gcc 4.6.1
 
