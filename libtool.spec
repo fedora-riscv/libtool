@@ -1,4 +1,4 @@
-%define gcc_version 4.6.0
+%define gcc_version 4.6.1
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
