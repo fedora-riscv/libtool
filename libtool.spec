@@ -3,11 +3,12 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 Patch0:  libtool-2.2.10-rpath.patch
+Patch1:  libtool-2.4-funcappend-759376.patch
 URL:     http://www.gnu.org/software/libtool/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 Requires(post):  /sbin/install-info
@@ -69,6 +70,7 @@ Static libraries and header files for development with ltdl.
 %prep
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
+%patch1 -p1 -b .typo
 
 %build
 
@@ -149,6 +151,9 @@ fi
 
 
 %changelog
+* Mon Feb 06 2012 Karsten Hopp <karsten@redhat.com> 2.4-8
+- fix typo (Bart Van Assche, bugzilla #759376)
+
 * Thu Oct 27 2011 Jakub Jelinek <jakub@redhat.com> 2.4-7
 - rebuilt for gcc 4.6.2
 

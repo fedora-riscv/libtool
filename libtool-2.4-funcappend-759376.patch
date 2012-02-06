@@ -1,0 +1,33 @@
+diff -U0 libtool-2.4/ChangeLog.typo libtool-2.4/ChangeLog
+--- libtool-2.4/ChangeLog.typo	2012-02-06 15:46:51.000000000 +0100
++++ libtool-2.4/ChangeLog	2012-02-06 15:46:40.000000000 +0100
+@@ -0,0 +1,5 @@
++2011-10-04 Bart Van Assche <bvanassche@acm.org>
++
++	Typo fix - change func_apped into func_append
++	* libltdl/config/ltmain.m4sh: Fix typo.
++
+diff -up libtool-2.4/libltdl/config/ltmain.m4sh.typo libtool-2.4/libltdl/config/ltmain.m4sh
+--- libtool-2.4/libltdl/config/ltmain.m4sh.typo	2012-02-06 15:47:51.000000000 +0100
++++ libtool-2.4/libltdl/config/ltmain.m4sh	2012-02-06 15:47:58.000000000 +0100
+@@ -7261,7 +7261,7 @@ EOF
+ 	    elif test -n "$runpath_var"; then
+ 	      case "$perm_rpath " in
+ 	      *" $libdir "*) ;;
+-	      *) func_apped perm_rpath " $libdir" ;;
++	      *) func_append perm_rpath " $libdir" ;;
+ 	      esac
+ 	    fi
+ 	  done
+diff -up libtool-2.4/libltdl/config/ltmain.sh.typo libtool-2.4/libltdl/config/ltmain.sh
+--- libtool-2.4/libltdl/config/ltmain.sh.typo	2012-02-06 15:47:15.000000000 +0100
++++ libtool-2.4/libltdl/config/ltmain.sh	2012-02-06 15:47:24.000000000 +0100
+@@ -8050,7 +8050,7 @@ EOF
+ 	    elif test -n "$runpath_var"; then
+ 	      case "$perm_rpath " in
+ 	      *" $libdir "*) ;;
+-	      *) func_apped perm_rpath " $libdir" ;;
++	      *) func_append perm_rpath " $libdir" ;;
+ 	      esac
+ 	    fi
+ 	  done
