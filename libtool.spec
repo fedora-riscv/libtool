@@ -3,13 +3,14 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
+URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
+
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 Patch0:  libtool-2.2.10-rpath.patch
-URL:     http://www.gnu.org/software/libtool/
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
+
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
@@ -93,15 +94,9 @@ make check VERBOSE=yes | tee make_check.log 2>&1 # || (cat make_check.log && fal
 
 
 %install
-rm -rf %{buildroot}
 make install DESTDIR=$RPM_BUILD_ROOT
 rm -f %{buildroot}%{_infodir}/dir
 rm -f %{buildroot}%{_libdir}/libltdl.la  %{buildroot}%{_libdir}/libltdl.a
-
-
-%clean
-rm -rf %{buildroot}
-
 
 
 %post
@@ -149,6 +144,9 @@ fi
 
 
 %changelog
+* Sun Jul 15 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 2.4.2-5
+- Rebuild
+
 * Fri Jun 29 2012 Richard W.M. Jones <rjones@redhat.com> - 2.4.2-4
 - Rebuild for gcc 4.7.1 which just entered Rawhide.
 
