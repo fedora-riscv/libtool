@@ -1,9 +1,9 @@
-%define gcc_version 4.7.2
+%global gcc_version 4.7.2
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -16,10 +16,10 @@ Requires(preun): /sbin/install-info
 
 BuildRequires: autoconf >= 2.59, automake >= 1.9.2, texinfo
 # we need this because tar is missing in Fedora installed with minimal profile
-BuildRequires: tar
+Requires: tar
 Requires: autoconf >= 2.58, automake >= 1.4, sed
 # make sure we can configure all supported langs
-BuildRequires: gcc, gcc-c++, libstdc++-devel, gcc-gfortran, gcc-java
+BuildRequires: libstdc++-devel, gcc-gfortran, gcc-java
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
 Requires: gcc = %{gcc_version}
@@ -34,7 +34,7 @@ If you are developing programs which will use shared libraries, but do not use
 the rest of the GNU Autotools (such as GNU Autoconf and GNU Automake), you
 should install the libtool package.
 
-The libtool package also includes all files needed to integrate the GNU 
+The libtool package also includes all files needed to integrate the GNU
 Portable Library Tool (libtool) and the GNU Libtool Dynamic Module Loader
 (ltdl) into a package built using the GNU Autotools (including GNU Autoconf
 and GNU Automake).
@@ -53,10 +53,8 @@ library that provides a consistent, portable interface which simplifies the
 process of using dynamic modules.
 
 These runtime libraries are needed by programs that link directly to the
-system-installed ltdl libraries; they are not needed by software built using 
+system-installed ltdl libraries; they are not needed by software built using
 the rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
-
-
 
 %package ltdl-devel
 Summary: Tools needed for development using the GNU Libtool Dynamic Module Loader
@@ -67,46 +65,48 @@ License:  LGPLv2+
 %description ltdl-devel
 Static libraries and header files for development with ltdl.
 
-
-
 %prep
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
 
 %build
 
-./bootstrap
-
 export CC=gcc
 export CXX=g++
 export F77=gfortran
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
-# don't conflict with libtool-1.5, use own directory:
-sed -e 's/pkgdatadir="\\${datadir}\/\$PACKAGE"/pkgdatadir="\\${datadir}\/\${PACKAGE}"/' configure > configure.tmp; mv -f configure.tmp configure; chmod a+x configure
-./configure --prefix=%{_prefix} --exec-prefix=%{_prefix} --bindir=%{_bindir} --sbindir=%{_sbindir} --sysconfdir=%{_sysconfdir} --datadir=%{_datadir} --includedir=%{_includedir} --libdir=%{_libdir} --libexecdir=%{_libexecdir} --localstatedir=%{_localstatedir} --mandir=%{_mandir} --infodir=%{_infodir}
-# build not smp safe:
-make #%{?_smp_mflags}
-for i in ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 ChangeLog.2002; do 
+
+%configure  --prefix=%{_prefix}                 \
+            --exec-prefix=%{_prefix}            \
+            --bindir=%{_bindir}                 \
+            --sbindir=%{_sbindir}               \
+            --sysconfdir=%{_sysconfdir}         \
+            --datadir=%{_datadir}               \
+            --includedir=%{_includedir}         \
+            --libdir=%{_libdir}                 \
+            --libexecdir=%{_libexecdir}         \
+            --localstatedir=%{_localstatedir}   \
+            --mandir=%{_mandir}                 \
+            --infodir=%{_infodir}
+
+## build not smp safe:
+make # %%{?_smp_mflags}
+
+for i in ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 ChangeLog.2002; do
   iconv -f ISO_8859-15 -t UTF8 $i > $i.tmp
   mv -f $i.tmp $i
 done
 
 %check
-make check VERBOSE=yes | tee make_check.log 2>&1 # || (cat make_check.log && false)
-
+make check
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
-rm -f %{buildroot}%{_infodir}/dir
-rm -f %{buildroot}%{_libdir}/libltdl.la  %{buildroot}%{_libdir}/libltdl.a
-
+make install DESTDIR=%{buildroot}
 
 %post
 /sbin/install-info %{_infodir}/libtool.info.gz %{_infodir}/dir || :
 
 %post ltdl -p /sbin/ldconfig
-
-
 
 %preun
 if [ "$1" = 0 ]; then
@@ -114,8 +114,6 @@ if [ "$1" = 0 ]; then
 fi
 
 %postun ltdl -p /sbin/ldconfig
-
-
 
 %files
 %defattr(-,root,root)
@@ -133,19 +131,27 @@ fi
 %defattr(-,root,root)
 %doc libltdl/COPYING.LIB
 %{_libdir}/libltdl.so.*
+%{_libdir}/libltdl.so
 %dir %{_datadir}/libtool
 
 %files ltdl-devel
 %defattr(-,root,root)
 %doc libltdl/README
 %{_datadir}/libtool/libltdl
-%{_libdir}/libltdl.so
 %{_includedir}/ltdl.h
 %{_includedir}/libltdl
 
-
-
 %changelog
+* Mon Oct 22 2012 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-9
+- fix fedora-review warnings: s/RPM_BUILD_ROOT/buildroot/, remove trailing
+  white-spaces, move libltdl.so to ltdl sub-package, remove unnecessary BR
+- remove unnecessary newlines
+- fix the BuildRequire ~> Require only (#79467 related)
+- fix weird build circumstances (don't call ./bootstrap, don't call autoconf
+  manually, do not touch configure script)
+- remove 'tee' invocation for copying testsuite output (the file
+  'test-suite.log' is good enough)
+
 * Thu Oct 04 2012 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-8
 - make the libtool dependant on tar (#794675)
 
@@ -314,8 +320,8 @@ fi
 
 * Thu Dec 07 2006 Karsten Hopp <karsten@redhat.com> 1.5.22-7
 - update config.guess, config.sub with newer files from automake-1.10
-- skip over lines in /etc/ld.so.conf.d/* which don't look like absolute paths 
-  (p.e. files from kernel-xen). This avoids having unwanted relative paths in 
+- skip over lines in /etc/ld.so.conf.d/* which don't look like absolute paths
+  (p.e. files from kernel-xen). This avoids having unwanted relative paths in
   lib_search_path
 
 * Wed Jul 12 2006 Jesse Keating <jkeating@redhat.com> - 1.5.22-6.1
@@ -454,7 +460,7 @@ fi
 - rebuild
 
 * Thu Jul 17 2003 Jens Petersen <petersen@redhat.com> - 1.5-5
-- bring back libtool-1.4.2-demo.patch to disable nopic tests on amd64 
+- bring back libtool-1.4.2-demo.patch to disable nopic tests on amd64
   and s390x again
 
 * Tue Jul 15 2003 Owen Taylor <otaylor@redhat.com>
@@ -465,7 +471,7 @@ fi
   [reported by twaugh]
 - use -nostdlib also when linking with g++ and non-GNU ld in
   _LT_AC_LANG_CXX_CONFIG [reported by fnasser, patch by aoliva]
-- use %%configure with CC and CXX set 
+- use %%configure with CC and CXX set
 
 * Thu Jun 12 2003 Jens Petersen <petersen@redhat.com> - 1.5-3
 - don't use %%configure since target options caused libtool to assume
@@ -545,7 +551,7 @@ fi
 
 * Fri Sep 13 2002 Nalin Dahyabhai <nalin@redhat.com>
 - patch to find the proper libdir on multilib boxes
- 
+
 * Mon Aug 19 2002 Jens Petersen <petersen@redhat.com> 1.4.2-12
 - don't include demo in doc, specially now that we "make check" (#71609)
 
@@ -666,7 +672,7 @@ fi
 - disable the --cache-file passing to ltconfig; this breaks the older
   ltconfig scripts found around.
 
-* Sun Mar 21 1999 Cristian Gafton <gafton@redhat.com> 
+* Sun Mar 21 1999 Cristian Gafton <gafton@redhat.com>
 - auto rebuild in the new build environment (release 2)
 
 * Fri Mar 19 1999 Jeff Johnson <jbj@redhat.com>
