@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -15,6 +15,8 @@ Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
 BuildRequires: autoconf >= 2.59, automake >= 1.9.2, texinfo
+# we need this because tar is missing in Fedora installed with minimal profile
+BuildRequires: tar
 Requires: autoconf >= 2.58, automake >= 1.4, sed
 # make sure we can configure all supported langs
 BuildRequires: gcc, gcc-c++, libstdc++-devel, gcc-gfortran, gcc-java
@@ -144,6 +146,9 @@ fi
 
 
 %changelog
+* Thu Oct 04 2012 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-8
+- make the libtool dependant on tar (#794675)
+
 * Fri Sep 21 2012 Dan Horák <dan[at]danny.cz> - 2.4.2-7
 - rebuild for gcc 4.7.2
 
