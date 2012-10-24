@@ -3,13 +3,14 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
 
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 Patch0:  libtool-2.2.10-rpath.patch
+Patch1:  libtool-2.4.2-TEMPORARY-disable-gcj-tests.patch
 
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -68,6 +69,7 @@ Static libraries and header files for development with ltdl.
 %prep
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
+%patch1 -p1 -b .temp-disable-gcj-test
 
 %build
 
@@ -98,7 +100,7 @@ for i in ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 ChangeLog.2002; do
 done
 
 %check
-make check
+make check VERBOSE=yes
 
 %install
 make install DESTDIR=%{buildroot}
@@ -142,6 +144,11 @@ fi
 %{_includedir}/libltdl
 
 %changelog
+* Wed Oct 24 2012 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-10
+- temporarily disable the 'gcj' tests (#869578) -- this is just to (1) allow
+  build under f18+ and RHEL-7.0 and (2) don't through out upstream testsuite.
+  Added patch must be removed once the 'ecj' utility is fixed
+
 * Mon Oct 22 2012 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-9
 - fix fedora-review warnings: s/RPM_BUILD_ROOT/buildroot/, remove trailing
   white-spaces, move libltdl.so to ltdl sub-package, remove unnecessary BR
