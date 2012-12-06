@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -15,10 +15,9 @@ Patch1:  libtool-2.4.2-TEMPORARY-disable-gcj-tests.patch
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
-BuildRequires: autoconf >= 2.59, automake >= 1.9.2, texinfo
-# we need this because tar is missing in Fedora installed with minimal profile
-Requires: tar
-Requires: autoconf >= 2.58, automake >= 1.4, sed
+BuildRequires: autoconf, automake, texinfo
+Requires: autoconf, automake, sed, tar
+
 # make sure we can configure all supported langs
 BuildRequires: libstdc++-devel, gcc-gfortran, gcc-java
 # /usr/bin/libtool includes paths within gcc's versioned directories
@@ -149,6 +148,9 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
+* Thu Dec 06 2012 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-11
+- remove specific version requirements on automake/autoconf
+
 * Thu Oct 25 2012 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-10
 - temporarily disable the 'gcj' tests (#869578) -- this is just to (1) allow
   build under f18+ and RHEL-7.0 and (2) don't through out upstream testsuite.
