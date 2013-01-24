@@ -1,9 +1,9 @@
-%global gcc_version 4.7.2
+%global gcc_version 4.8.0
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -148,6 +148,9 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
+* Thu Jan 24 2013 Jakub Jelinek <jakub@redhat.com> - 2.4.2-12
+- rebuilt for gcc 4.8.0
+
 * Thu Dec 06 2012 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-11
 - remove specific version requirements on automake/autoconf
 
