@@ -19,7 +19,12 @@ BuildRequires: autoconf, automake, texinfo
 Requires: autoconf, automake, sed, tar
 
 # make sure we can configure all supported langs
-BuildRequires: libstdc++-devel, gcc-gfortran, gcc-java
+BuildRequires: libstdc++-devel, gcc-gfortran
+%if !0%{?rhel:1}
+# gcc-java was disabled in RHEL >= 7
+BuildRequires: gcc-java
+%endif
+
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
 Requires: gcc = %{gcc_version}
@@ -148,6 +153,9 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
+* Thu Mar 14 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-13
+- do not BR gcc-java in RHEL (by dmach)
+
 * Thu Jan 24 2013 Jakub Jelinek <jakub@redhat.com> - 2.4.2-12
 - rebuilt for gcc 4.8.0
 
