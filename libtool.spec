@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -11,6 +11,11 @@ Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 Patch0:  libtool-2.2.10-rpath.patch
 Patch1:  libtool-2.4.2-TEMPORARY-disable-gcj-tests.patch
+# Run the 'tar --no-same-owner -xf' instead of 'tar -xf'
+# ~> #740079
+# ~> Downstream - tar is not used in upstream 'master' branch anymore, will be
+#    fixed in next release.
+Patch2:  libtool-2.4.2-tar-no-owner.patch
 
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -74,6 +79,7 @@ Static libraries and header files for development with ltdl.
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
 %patch1 -p1 -b .temp-disable-gcj-test
+%patch2 -p1 -b .tar-no-same-owner
 
 %build
 
@@ -153,6 +159,9 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
+* Wed Apr 24 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-14
+- allow root to copy files into NFS in libtoolize (#740079)
+
 * Thu Mar 14 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-13
 - do not BR gcc-java in RHEL (by dmach)
 
