@@ -17,6 +17,13 @@ Patch1:  libtool-2.4.2-TEMPORARY-disable-gcj-tests.patch
 #    fixed in next release.
 Patch2:  libtool-2.4.2-tar-no-owner.patch
 
+# Do not hang too long on sed
+# ~> #636045
+# ~> Downstream (we don't care much about portability)
+# ~> upstream proposal:
+#    http://lists.gnu.org/archive/html/bug-libtool/2013-04/msg00005.html
+Patch3:  libtool-2.4.2-dd-execute-mode.patch
+
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
@@ -80,6 +87,7 @@ Static libraries and header files for development with ltdl.
 %patch0 -p1 -b .rpath
 %patch1 -p1 -b .temp-disable-gcj-test
 %patch2 -p1 -b .tar-no-same-owner
+%patch3 -p1 -b .dd-exec-mode
 
 %build
 
@@ -159,8 +167,9 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
-* Wed Apr 24 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-14
+* Fri Apr 26 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-14
 - allow root to copy files into NFS in libtoolize (#740079)
+- pre-filter sed's input by dd (#636045)
 
 * Thu Mar 14 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-13
 - do not BR gcc-java in RHEL (by dmach)
