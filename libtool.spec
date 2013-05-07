@@ -80,7 +80,6 @@ Static libraries and header files for development with ltdl.
 %patch0 -p1 -b .rpath
 %patch1 -p1 -b .temp-disable-gcj-test
 %patch2 -p1 -b .tar-no-same-owner
-%patch3 -p1 -b .dd-exec-mode
 
 %build
 
