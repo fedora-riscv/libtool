@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -16,13 +16,6 @@ Patch1:  libtool-2.4.2-TEMPORARY-disable-gcj-tests.patch
 # ~> Downstream - tar is not used in upstream 'master' branch anymore, will be
 #    fixed in next release.
 Patch2:  libtool-2.4.2-tar-no-owner.patch
-
-# Do not hang too long on sed
-# ~> #636045
-# ~> Downstream (we don't care much about portability)
-# ~> upstream proposal:
-#    http://lists.gnu.org/archive/html/bug-libtool/2013-04/msg00005.html
-Patch3:  libtool-2.4.2-dd-execute-mode.patch
 
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -167,6 +160,9 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
+* Tue May 07 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-15
+- revert fix for #636045, thanks to Paolo Bonzini
+
 * Fri Apr 26 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-14
 - allow root to copy files into NFS in libtoolize (#740079)
 - pre-filter sed's input by dd (#636045)
