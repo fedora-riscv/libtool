@@ -159,7 +159,7 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
-* Tue Jul 04 2013 Jakub Jelinek <jakub@redhat.com> - 2.4.2-16
+* Tue Jun 04 2013 Jakub Jelinek <jakub@redhat.com> - 2.4.2-16
 - rebuilt for gcc 4.8.1
 
 * Tue May 07 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-15
