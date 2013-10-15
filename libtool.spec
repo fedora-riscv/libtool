@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 19%{?dist}
+Release: 20%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -16,6 +16,11 @@ Patch1:  libtool-2.4.2-TEMPORARY-disable-gcj-tests.patch
 # ~> Downstream - tar is not used in upstream 'master' branch anymore, will be
 #    fixed in next release.
 Patch2:  libtool-2.4.2-tar-no-owner.patch
+
+# powerpc*le-linux support
+# ~> upstream
+# ~> git diff c37bc1a3..bd998a7e
+Patch3:  libtool-2.4.2-powerpcle-linux.patch
 
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -80,6 +85,7 @@ Static libraries and header files for development with ltdl.
 %patch0 -p1 -b .rpath
 %patch1 -p1 -b .temp-disable-gcj-test
 %patch2 -p1 -b .tar-no-same-owner
+%patch3 -p1 -b .ppc-le-support
 
 %build
 
@@ -159,6 +165,9 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
+* Tue Oct 15 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-20
+- backport support for powerpc*le-linux to libtool.m4
+
 * Thu Oct 10 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-19
 - rebuild once again for new config.{sub,guess} in redhat-rpm-config
 
