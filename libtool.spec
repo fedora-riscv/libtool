@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 22%{?dist}
+Release: 23%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -19,7 +19,7 @@ Patch2:  libtool-2.4.2-tar-no-owner.patch
 
 # powerpc*le-linux support
 # ~> upstream
-# ~> git diff c37bc1a3..bd998a7e
+# ~> `git diff c37bc1a3..8a8dfaec m4/libtool.m4`
 Patch3:  libtool-2.4.2-powerpcle-linux.patch
 
 Requires(post):  /sbin/install-info
@@ -165,6 +165,9 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
+* Thu Jan 23 2014 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-23
+- fix powerpcle patch to reflect what is really in upstream
+
 * Tue Jan 07 2014 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-22
 - require findutils (minimal installations) (#1047084)
 
