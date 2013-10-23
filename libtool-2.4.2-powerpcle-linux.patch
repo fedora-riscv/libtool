@@ -16,10 +16,10 @@ index 56666f0..126202f 100644
  	    LD="${LD-ld} -m elf_i386"
  	    ;;
 -	  ppc64-*linux*|powerpc64-*linux*)
-+	  powerpcle-*linux*)
++	  powerpc64le-*linux*)
 +	    LD="${LD-ld} -m elf32lppclinux"
 +	    ;;
-+	  powerpc-*linux*)
++	  powerpc64-*linux*)
  	    LD="${LD-ld} -m elf32ppclinux"
  	    ;;
  	  s390x-*linux*)
