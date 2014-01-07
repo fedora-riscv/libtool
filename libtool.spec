@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 22%{?dist}
+Release: 23%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -26,7 +26,7 @@ Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
 BuildRequires: autoconf, automake, texinfo
-Requires: autoconf, automake, sed, tar
+Requires: autoconf, automake, sed, tar, findutils
 
 # make sure we can configure all supported langs
 BuildRequires: libstdc++-devel, gcc-gfortran
@@ -165,6 +165,9 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
+* Tue Jan 07 2014 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-23
+- require findutils (minimal installations) (#1047084)
+
 * Wed Oct 23 2013 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-22
 - fix powerpcle patch to reflect what is really in upstream
 
