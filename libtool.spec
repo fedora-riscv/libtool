@@ -1,4 +1,5 @@
-%global gcc_version 4.9.0
+# See the bug #429880
+%global gcc_version  %(gcc -dumpversion || echo "666")
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
@@ -9,8 +10,14 @@ URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
 
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
+
+# ~> downstream
 Patch0:  libtool-2.2.10-rpath.patch
+
+# Disable buggy tests for features we don't support.
+# ~> downstream
 Patch1:  libtool-2.4.2-TEMPORARY-disable-gcj-tests.patch
+
 # Run the 'tar --no-same-owner -xf' instead of 'tar -xf'
 # ~> #740079
 # ~> Downstream - tar is not used in upstream 'master' branch anymore, will be
@@ -22,11 +29,14 @@ Patch2:  libtool-2.4.2-tar-no-owner.patch
 # ~> `git diff c37bc1a3..8a8dfaec m4/libtool.m4`
 Patch3:  libtool-2.4.2-powerpcle-linux.patch
 
+# /usr/bin/libtool includes paths within gcc's versioned directories
+# Libtool must be rebuilt whenever a new upstream gcc is built
+Requires: gcc = %{gcc_version}
+Requires: autoconf, automake, sed, tar, findutils
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
 BuildRequires: autoconf, automake, texinfo
-Requires: autoconf, automake, sed, tar, findutils
 
 # make sure we can configure all supported langs
 BuildRequires: libstdc++-devel, gcc-gfortran
@@ -34,6 +44,7 @@ BuildRequires: libstdc++-devel, gcc-gfortran
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
 Requires: gcc = %{gcc_version}
+
 
 %description
 GNU Libtool is a set of shell scripts which automatically configure UNIX and
@@ -50,6 +61,7 @@ Portable Library Tool (libtool) and the GNU Libtool Dynamic Module Loader
 (ltdl) into a package built using the GNU Autotools (including GNU Autoconf
 and GNU Automake).
 
+
 %package ltdl
 Summary:  Runtime libraries for GNU Libtool Dynamic Module Loader
 Group:    System Environment/Libraries
@@ -57,6 +69,7 @@ Provides: %{name}-libs = %{version}-%{release}
 License:  LGPLv2+
 Requires(post):  /sbin/ldconfig
 Requires(postun):  /sbin/ldconfig
+
 
 %description ltdl
 The libtool-ltdl package contains the GNU Libtool Dynamic Module Loader, a
@@ -67,14 +80,17 @@ These runtime libraries are needed by programs that link directly to the
 system-installed ltdl libraries; they are not needed by software built using
 the rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
 
+
 %package ltdl-devel
 Summary: Tools needed for development using the GNU Libtool Dynamic Module Loader
 Group:    Development/Libraries
 Requires: %{name}-ltdl = %{version}-%{release}
 License:  LGPLv2+
 
+
 %description ltdl-devel
 Static libraries and header files for development with ltdl.
+
 
 %prep
 %setup -n libtool-%{version} -q
@@ -83,8 +99,8 @@ Static libraries and header files for development with ltdl.
 %patch2 -p1 -b .tar-no-same-owner
 %patch3 -p1 -b .ppc-le-support
 
-%build
 
+%build
 export CC=gcc
 export CXX=g++
 export F77=gfortran
@@ -103,16 +119,17 @@ export CFLAGS="$RPM_OPT_FLAGS -fPIC"
             --mandir=%{_mandir}                 \
             --infodir=%{_infodir}
 
-## build not smp safe:
-make # %%{?_smp_mflags}
+make %{?_smp_mflags}
 
 for i in ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 ChangeLog.2002; do
   iconv -f ISO_8859-15 -t UTF8 $i > $i.tmp
   mv -f $i.tmp $i
 done
 
+
 %check
 make check VERBOSE=yes
+
 
 %install
 make install DESTDIR=%{buildroot}
@@ -122,17 +139,22 @@ rm -f %{buildroot}%{_infodir}/dir
 # `./configure --disable-static' breaks testsuite)
 rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
+
 %post
 /sbin/install-info %{_infodir}/libtool.info.gz %{_infodir}/dir || :
 
+
 %post ltdl -p /sbin/ldconfig
+
 
 %preun
 if [ "$1" = 0 ]; then
    /sbin/install-info --delete %{_infodir}/libtool.info.gz %{_infodir}/dir || :
 fi
 
+
 %postun ltdl -p /sbin/ldconfig
+
 
 %files
 %defattr(-,root,root)
@@ -146,10 +168,12 @@ fi
 %exclude %{_datadir}/libtool/libltdl
 %{_datadir}/libtool
 
+
 %files ltdl
 %defattr(-,root,root)
 %doc libltdl/COPYING.LIB
 %{_libdir}/libltdl.so.*
+
 
 %files ltdl-devel
 %defattr(-,root,root)
@@ -160,9 +184,11 @@ fi
 # .so files without version must be in -devel subpackage
 %{_libdir}/libltdl.so
 
+
 %changelog
 * Mon Jun 09 2014 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-26
 - gcc-java removed from Fedora completely (#1106080)
+- spec cleanup and implement RPM/SRPM hack (#429880)
 
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.2-25
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
