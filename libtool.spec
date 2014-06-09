@@ -3,7 +3,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 25%{?dist}
+Release: 26%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -30,10 +30,6 @@ Requires: autoconf, automake, sed, tar, findutils
 
 # make sure we can configure all supported langs
 BuildRequires: libstdc++-devel, gcc-gfortran
-%if !0%{?rhel:1}
-# gcc-java was disabled in RHEL >= 7
-BuildRequires: gcc-java
-%endif
 
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
@@ -165,6 +161,9 @@ fi
 %{_libdir}/libltdl.so
 
 %changelog
+* Mon Jun 09 2014 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-26
+- gcc-java removed from Fedora completely (#1106080)
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4.2-25
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
