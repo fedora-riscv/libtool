@@ -4,7 +4,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 26%{?dist}
+Release: 27%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -186,6 +186,9 @@ fi
 
 
 %changelog
+* Thu Jul 17 2014 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-27
+- rebuild for gcc 4.9.1
+
 * Mon Jun 09 2014 Pavel Raiskup <praiskup@redhat.com> - 2.4.2-26
 - gcc-java removed from Fedora completely (#1106080)
 - spec cleanup and implement RPM/SRPM hack (#429880)
