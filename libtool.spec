@@ -3,8 +3,8 @@
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
-Version: 2.4.2
-Release: 31%{?dist}
+Version: 2.4.3
+Release: 1%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -12,22 +12,8 @@ Group:   Development/Tools
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 
 # ~> downstream
-Patch0:  libtool-2.2.10-rpath.patch
-
-# Disable buggy tests for features we don't support.
-# ~> downstream
-Patch1:  libtool-2.4.2-TEMPORARY-disable-gcj-tests.patch
-
-# Run the 'tar --no-same-owner -xf' instead of 'tar -xf'
-# ~> #740079
-# ~> Downstream - tar is not used in upstream 'master' branch anymore, will be
-#    fixed in next release.
-Patch2:  libtool-2.4.2-tar-no-owner.patch
-
-# powerpc*le-linux support
-# ~> upstream
-# ~> `git diff c37bc1a3..8a8dfaec m4/libtool.m4`
-Patch3:  libtool-2.4.2-powerpcle-linux.patch
+# ~> remove possibly once #1158915 gets fixed somehow
+Patch0:  libtool-2.4.3-rpath.patch
 
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
@@ -95,9 +81,6 @@ Static libraries and header files for development with ltdl.
 %prep
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
-%patch1 -p1 -b .temp-disable-gcj-test
-%patch2 -p1 -b .tar-no-same-owner
-%patch3 -p1 -b .ppc-le-support
 
 
 %build
@@ -120,11 +103,6 @@ export CFLAGS="$RPM_OPT_FLAGS -fPIC"
             --infodir=%{_infodir}
 
 make %{?_smp_mflags}
-
-for i in ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 ChangeLog.2002; do
-  iconv -f ISO_8859-15 -t UTF8 $i > $i.tmp
-  mv -f $i.tmp $i
-done
 
 
 %check
@@ -157,7 +135,6 @@ fi
 
 
 %files
-%defattr(-,root,root)
 %doc AUTHORS COPYING NEWS README THANKS TODO ChangeLog*
 %{_infodir}/libtool.info*.gz
 %{_mandir}/man1/libtool.1*
@@ -165,20 +142,19 @@ fi
 %{_bindir}/libtool
 %{_bindir}/libtoolize
 %{_datadir}/aclocal/*.m4
-%exclude %{_datadir}/libtool/libltdl
-%{_datadir}/libtool
+%dir %{_datadir}/libtool
+%{_datadir}/libtool/build-aux
 
 
 %files ltdl
-%defattr(-,root,root)
 %doc libltdl/COPYING.LIB
 %{_libdir}/libltdl.so.*
 
 
 %files ltdl-devel
-%defattr(-,root,root)
 %doc libltdl/README
-%{_datadir}/libtool/libltdl
+%{_datadir}/libtool
+%exclude %{_datadir}/libtool/build-aux
 %{_includedir}/ltdl.h
 %{_includedir}/libltdl
 # .so files without version must be in -devel subpackage
@@ -186,6 +162,10 @@ fi
 
 
 %changelog
+* Wed Jan 14 2015 Pavel Raiskup <praiskup@redhat.com> - 2.4.3-1
+- rebase per release notes:
+  http://lists.gnu.org/archive/html/autotools-announce/2014-10/msg00000.html
+
 * Sun Nov 02 2014 Jakub Jelinek <jakub@redhat.com> - 2.4.2-31
 - rebuilt for gcc 4.9.2
 
