@@ -1,9 +1,11 @@
 # See the bug #429880
 %global gcc_version  %(gcc -dumpversion || echo "666")
 
+%{!?runselftest:%global runselftest             1}
+
 Summary: The GNU Portable Library Tool
 Name:    libtool
-Version: 2.4.3
+Version: 2.4.4
 Release: 1%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
@@ -14,6 +16,10 @@ Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 # ~> downstream
 # ~> remove possibly once #1158915 gets fixed somehow
 Patch0:  libtool-2.4.3-rpath.patch
+
+# ~> downstream (proposed)
+# ~> http://permalink.gmane.org/gmane.comp.gnu.libtool.patches/11808
+Patch1:  libtool-2.4.4-race-in-aclocal-autoheader-calls.patch
 
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
@@ -81,7 +87,9 @@ Static libraries and header files for development with ltdl.
 %prep
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
+%patch1 -p1 -b .racy-testsuite
 
+autoreconf -v
 
 %build
 export CC=gcc
@@ -106,7 +114,9 @@ make %{?_smp_mflags}
 
 
 %check
-make check VERBOSE=yes
+%if 0%{?runselftest}
+make check VERBOSE=yes || { cat testsuite.log ; false ; }
+%endif
 
 
 %install
@@ -162,6 +172,9 @@ fi
 
 
 %changelog
+* Wed Jan 14 2015 Pavel Raiskup <praiskup@redhat.com> - 2.4.4-1
+- rebase to quick bugfix release 2.4.4 (2.4.5 will follow up)
+
 * Wed Jan 14 2015 Pavel Raiskup <praiskup@redhat.com> - 2.4.3-1
 - rebase per release notes:
   http://lists.gnu.org/archive/html/autotools-announce/2014-10/msg00000.html
