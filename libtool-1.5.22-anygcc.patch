@@ -1,0 +1,44 @@
+--- libtool-1.5.22/libtool.m4.anygcc	2005-12-18 22:53:17.000000000 +0100
++++ libtool-1.5.22/libtool.m4	2006-06-29 14:20:18.000000000 +0200
+@@ -4294,6 +4294,9 @@
+ # Is the compiler the GNU C compiler?
+ with_gcc=$_LT_AC_TAGVAR(GCC, $1)
+ 
++gcc_dir=\`gcc -print-file-name=. | $SED 's,/\.$,,'\`
++gcc_ver=\`gcc -dumpversion\`
++
+ # An ERE matcher.
+ EGREP=$lt_EGREP
+ 
+@@ -4427,11 +4430,11 @@
+ 
+ # Dependencies to place before the objects being linked to create a
+ # shared library.
+-predep_objects=$lt_[]_LT_AC_TAGVAR(predep_objects, $1)
++predep_objects=\`echo $lt_[]_LT_AC_TAGVAR(predep_objects, $1) | \$SED -e "s@\${gcc_dir}@\\\${gcc_dir}@g;s@\${gcc_ver}@\\\${gcc_ver}@g"\`
+ 
+ # Dependencies to place after the objects being linked to create a
+ # shared library.
+-postdep_objects=$lt_[]_LT_AC_TAGVAR(postdep_objects, $1)
++postdep_objects=\`echo $lt_[]_LT_AC_TAGVAR(postdep_objects, $1) | \$SED -e "s@\${gcc_dir}@\\\${gcc_dir}@g;s@\${gcc_ver}@\\\${gcc_ver}@g"\`
+ 
+ # Dependencies to place before the objects being linked to create a
+ # shared library.
+@@ -4443,7 +4446,7 @@
+ 
+ # The library search path used internally by the compiler when linking
+ # a shared library.
+-compiler_lib_search_path=$lt_[]_LT_AC_TAGVAR(compiler_lib_search_path, $1)
++compiler_lib_search_path=\`echo $lt_[]_LT_AC_TAGVAR(compiler_lib_search_path, $1) | \$SED -e "s@\${gcc_dir}@\\\${gcc_dir}@g;s@\${gcc_ver}@\\\${gcc_ver}@g"\`
+ 
+ # Method to check whether dependent libraries are shared objects.
+ deplibs_check_method=$lt_deplibs_check_method
+@@ -4523,7 +4526,7 @@
+ link_all_deplibs=$_LT_AC_TAGVAR(link_all_deplibs, $1)
+ 
+ # Compile-time system search path for libraries
+-sys_lib_search_path_spec=$lt_sys_lib_search_path_spec
++sys_lib_search_path_spec=\`echo $lt_sys_lib_search_path_spec | \$SED -e "s@\${gcc_dir}@\\\${gcc_dir}@g;s@\${gcc_ver}@\\\${gcc_ver}@g"\`
+ 
+ # Run-time system search path for libraries
+ sys_lib_dlsearch_path_spec=$lt_sys_lib_dlsearch_path_spec

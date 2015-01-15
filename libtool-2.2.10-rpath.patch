@@ -1,17 +1,7 @@
-From 78f1c485fa9833c2b02f0bb5b1a630ee67251a01 Mon Sep 17 00:00:00 2001
-From: Karsten Hopp <karsten@fedoraproject.org>
-Date: Wed, 29 Oct 2014 13:27:27 +0100
-Subject: [PATCH] remove /lib64 and /usr/lib64 rpath
-
----
- m4/libtool.m4 | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/m4/libtool.m4 b/m4/libtool.m4
-index 068f0d8..bb87360 100644
---- a/m4/libtool.m4
-+++ b/m4/libtool.m4
-@@ -2739,10 +2739,13 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
+diff -urN libtool-2.2.10/libltdl/m4/libtool.m4 libtool-2.2.10_new/libltdl/m4/libtool.m4
+--- libtool-2.2.10/libltdl/m4/libtool.m4	2010-05-20 23:22:02.000000000 +0200
++++ libtool-2.2.10_new/libltdl/m4/libtool.m4	2010-06-24 11:18:06.000000000 +0200
+@@ -2474,10 +2474,14 @@
    # before this can be enabled.
    hardcode_into_libs=yes
  
@@ -23,9 +13,7 @@ index 068f0d8..bb87360 100644
      lt_ld_extra=`awk '/^include / { system(sprintf("cd /etc; cat %s 2>/dev/null", \[$]2)); skip = 1; } { if (!skip) print \[$]0; skip = 0; }' < /etc/ld.so.conf | $SED -e 's/#.*//;/^[	 ]*hwcap[	 ]/d;s/[:,	]/ /g;s/=[^=]*$//;s/=[^= ]* / /g;s/"//g;/^$/d' | tr '\n' ' '`
 -    sys_lib_dlsearch_path_spec="/lib /usr/lib $lt_ld_extra"
 +    sys_lib_dlsearch_path_spec="$sys_lib_dlsearch_path_spec $lt_ld_extra"
++
    fi
  
    # We used to test for /lib/ld.so.1 and disable shared libraries on
--- 
-1.9.3
-
