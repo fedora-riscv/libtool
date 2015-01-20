@@ -5,7 +5,7 @@
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
-Version: 2.4.4
+Version: 2.4.5
 Release: 1%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
@@ -15,11 +15,15 @@ Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 
 # ~> downstream
 # ~> remove possibly once #1158915 gets fixed somehow
-Patch0:  libtool-2.4.3-rpath.patch
+Patch0:  libtool-2.4.5-rpath.patch
 
 # ~> downstream (proposed)
 # ~> http://permalink.gmane.org/gmane.comp.gnu.libtool.patches/11808
 Patch1:  libtool-2.4.4-race-in-aclocal-autoheader-calls.patch
+
+# ~> downstream (proposed)
+# ~> https://lists.gnu.org/archive/html/libtool/2014-12/msg00025.html
+Patch2:  libtool-2.4.5-fix-path-munging.patch
 
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
@@ -88,6 +92,7 @@ Static libraries and header files for development with ltdl.
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
 %patch1 -p1 -b .racy-testsuite
+%patch2 -p1 -b .munge-quadrigraph
 
 autoreconf -v
 
@@ -172,8 +177,8 @@ fi
 
 
 %changelog
-* Tue Feb 17 2015 Pavel Raiskup <praiskup@redhat.com> - 2.4.4-1
-- rebase again to 2.4.4
+* Tue Feb 17 2015 Pavel Raiskup <praiskup@redhat.com> - 2.4.5-1
+- rebase to 2.4.5
 
 * Fri Feb 06 2015 Jakub Jelinek <jakub@redhat.com> - 2.4.2-32
 - rebuilt for gcc 5.0.0
