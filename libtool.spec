@@ -25,6 +25,7 @@ Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
 BuildRequires: autoconf, automake, texinfo
+BuildRequires: help2man
 
 # make sure we can configure all supported langs
 BuildRequires: libstdc++-devel, gcc-gfortran
