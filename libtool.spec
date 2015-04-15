@@ -4,7 +4,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.2
-Release: 32%{?dist}
+Release: 33%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -186,6 +186,9 @@ fi
 
 
 %changelog
+* Wed Apt 15 2015 Dan Horák <dan[at]danny.cz> - 2.4.2-33
+- rebuilt for gcc 5.0.1
+
 * Fri Feb 06 2015 Jakub Jelinek <jakub@redhat.com> - 2.4.2-32
 - rebuilt for gcc 5.0.0
 
