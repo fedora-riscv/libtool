@@ -186,7 +186,7 @@ fi
 
 
 %changelog
-* Wed Apt 15 2015 Dan Horák <dan[at]danny.cz> - 2.4.2-33
+* Wed Apr 15 2015 Dan Horák <dan[at]danny.cz> - 2.4.2-33
 - rebuilt for gcc 5.0.1
 
 * Fri Feb 06 2015 Jakub Jelinek <jakub@redhat.com> - 2.4.2-32
