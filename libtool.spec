@@ -1,3 +1,6 @@
+# See the bug #1289759
+%undefine _hardened_build
+
 # See the bug #429880
 %global gcc_version  %(gcc -dumpversion || echo "666")
 
@@ -6,7 +9,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -171,6 +174,9 @@ fi
 
 
 %changelog
+* Tue Dec 08 2015 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-8
+- disable hardening (#1289759)
+
 * Tue Dec 08 2015 Kalev Lember <klember@redhat.com> - 2.4.6-7
 - Rebuilt for gcc 5.3.1
 
