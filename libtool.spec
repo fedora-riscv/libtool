@@ -9,7 +9,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -174,6 +174,9 @@ fi
 
 
 %changelog
+* Thu Jan 28 2016 Jakub Jelinek <jakub@redhat.com> - 2.4.6-9
+- rebuilt for gcc 6.0.0
+
 * Tue Dec 08 2015 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-8
 - disable hardening (#1289759)
 
