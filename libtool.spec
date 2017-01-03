@@ -4,7 +4,7 @@
 # See the bug #429880
 %global gcc_version  %(gcc -dumpversion || echo "666")
 
-%{!?runselftest:%global runselftest     1}
+%bcond_without check
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
@@ -112,7 +112,7 @@ make %{?_smp_mflags}
 
 
 %check
-%if 0%{?runselftest}
+%if %{with check}
 make check VERBOSE=yes || { cat testsuite.log ; false ; }
 %endif
 
@@ -172,6 +172,7 @@ fi
 %changelog
 * Tue Jan 03 2017 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-14
 - remove duplicate Requires: entry
+- use bcond_without instead of PostgreSQL-packaging 'runselftest'
 
 * Thu Dec 22 2016 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-13
 - bump: for gcc 6.3.1
