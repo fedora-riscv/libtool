@@ -9,7 +9,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -32,10 +32,6 @@ BuildRequires: help2man
 
 # make sure we can configure all supported langs
 BuildRequires: libstdc++-devel, gcc-gfortran
-
-# /usr/bin/libtool includes paths within gcc's versioned directories
-# Libtool must be rebuilt whenever a new upstream gcc is built
-Requires: gcc = %{gcc_version}
 
 
 %description
@@ -174,6 +170,9 @@ fi
 
 
 %changelog
+* Tue Jan 03 2017 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-14
+- remove duplicate Requires: entry
+
 * Thu Dec 22 2016 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-13
 - bump: for gcc 6.3.1
 
