@@ -2,14 +2,14 @@
 %undefine _hardened_build
 
 # See the bug #429880
-%global gcc_version  %(gcc -dumpversion || echo "666")
+%global gcc_major  %(gcc -dumpversion || echo "666")
 
 %bcond_without check
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -22,7 +22,9 @@ Patch0:  libtool-2.4.5-rpath.patch
 
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
-Requires: gcc = %{gcc_version}
+# Starting with gcc 7 gcc in Fedora is packaged so that only major
+# number changes need libtool rebuilding.
+Requires: gcc(major) = %{gcc_major}
 Requires: autoconf, automake, sed, tar, findutils
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -170,6 +172,10 @@ fi
 
 
 %changelog
+* Fri Jan 27 2017 Jakub Jelinek <jakub@redhat.com> - 2.4.6-15
+- bump: for gcc 7.*
+- require gcc(major) = 7 rather than gcc = 7.0.1
+
 * Tue Jan 03 2017 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-14
 - remove duplicate Requires: entry
 - use bcond_without instead of PostgreSQL-packaging 'runselftest'
