@@ -9,7 +9,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 15%{?dist}
+Release: 16%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -145,7 +145,8 @@ fi
 
 
 %files
-%doc AUTHORS COPYING NEWS README THANKS TODO ChangeLog*
+%license COPYING
+%doc AUTHORS NEWS README THANKS TODO ChangeLog*
 %{_infodir}/libtool.info*.gz
 %{_mandir}/man1/libtool.1*
 %{_mandir}/man1/libtoolize.1*
@@ -157,11 +158,12 @@ fi
 
 
 %files ltdl
-%doc libltdl/COPYING.LIB
+%license libltdl/COPYING.LIB
 %{_libdir}/libltdl.so.*
 
 
 %files ltdl-devel
+%license libltdl/COPYING.LIB
 %doc libltdl/README
 %{_datadir}/libtool
 %exclude %{_datadir}/libtool/build-aux
@@ -172,6 +174,9 @@ fi
 
 
 %changelog
+* Thu Feb 02 2017 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-16
+- use %%license (rhbz#1418518)
+
 * Fri Jan 27 2017 Jakub Jelinek <jakub@redhat.com> - 2.4.6-15
 - bump: for gcc 7.*
 - require gcc(major) = 7 rather than gcc = 7.0.1
