@@ -1,0 +1,39 @@
+--- Makefile.in.nodocs	2017-04-19 16:15:58.630583989 +0200
++++ Makefile.in	2017-04-19 16:18:19.055635521 +0200
+@@ -313,12 +313,11 @@
+ AM_MAKEINFOHTMLFLAGS = $(AM_MAKEINFOFLAGS)
+ DVIPS = dvips
+ RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
+-	ctags-recursive dvi-recursive html-recursive info-recursive \
+-	install-data-recursive install-dvi-recursive \
+-	install-exec-recursive install-html-recursive \
+-	install-info-recursive install-pdf-recursive \
+-	install-ps-recursive install-recursive installcheck-recursive \
+-	installdirs-recursive pdf-recursive ps-recursive \
++	ctags-recursive \
++	install-data-recursive \
++	install-exec-recursive \
++	install-recursive installcheck-recursive \
++	installdirs-recursive \
+ 	tags-recursive uninstall-recursive
+ am__can_run_installinfo = \
+   case $$AM_UPDATE_INFO_DIR in \
+@@ -361,8 +360,7 @@
+ ETAGS = etags
+ CTAGS = ctags
+ CSCOPE = cscope
+-am__DIST_COMMON = $(dist_man1_MANS) $(doc_libtool_TEXINFOS) \
+-	$(srcdir)/Makefile.in $(srcdir)/config-h.in \
++am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/config-h.in \
+ 	$(srcdir)/libltdl/ltdl.mk $(top_srcdir)/build-aux/compile \
+ 	$(top_srcdir)/build-aux/config.guess \
+ 	$(top_srcdir)/build-aux/config.sub \
+@@ -1973,7 +1971,7 @@
+ info-am: $(INFO_DEPS)
+ 
+ install-data-am: install-data-local install-includeHEADERS \
+-	install-info-am install-ltdlincludeHEADERS install-man
++	install-ltdlincludeHEADERS
+ 
+ install-dvi: install-dvi-recursive
+ 

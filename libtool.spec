@@ -1,6 +1,10 @@
 # See the bug #1289759
 %undefine _hardened_build
 
+# Set to bcond_without or use --with bootstrap if bootstrapping a new release
+# or architecture
+%bcond_without bootstrap
+
 # See the bug #429880
 %global gcc_major  %(gcc -dumpversion || echo "666")
 
@@ -19,6 +23,9 @@ Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 # ~> downstream
 # ~> remove possibly once #1158915 gets fixed somehow
 Patch0:  libtool-2.4.5-rpath.patch
+%if %{without bootstrap}
+Patch100: libtool-nodocs.patch
+%endif
 
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
@@ -29,7 +36,10 @@ Requires: autoconf, automake, sed, tar, findutils
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
-BuildRequires: autoconf, automake, texinfo
+%if %{without bootstrap}
+BuildRequires: texinfo
+%endif
+BuildRequires: autoconf, automake
 BuildRequires: help2man
 
 # make sure we can configure all supported langs
@@ -85,6 +95,9 @@ Static libraries and header files for development with ltdl.
 %prep
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
+%if %{without bootstrap}
+%patch100 -p1 -b .nodocs
+%endif
 
 autoreconf -v
 
