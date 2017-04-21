@@ -1,10 +1,6 @@
 # See the bug #1289759
 %undefine _hardened_build
 
-# Set to bcond_without or use --with bootstrap if bootstrapping a new release
-# or architecture
-%bcond_without bootstrap
-
 # See the bug #429880
 %global gcc_major  %(gcc -dumpversion || echo "666")
 
@@ -13,7 +9,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 17%{?dist}
+Release: 18%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -23,7 +19,7 @@ Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 # ~> downstream
 # ~> remove possibly once #1158915 gets fixed somehow
 Patch0:  libtool-2.4.5-rpath.patch
-%if %{without bootstrap}
+%if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
 %endif
 
@@ -36,7 +32,7 @@ Requires: autoconf, automake, sed, tar, findutils
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
-%if %{without bootstrap}
+%if ! 0%{?_module_build}
 BuildRequires: texinfo
 %endif
 BuildRequires: autoconf, automake
@@ -95,7 +91,7 @@ Static libraries and header files for development with ltdl.
 %prep
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
-%if %{without bootstrap}
+%if ! 0%{?_module_build}
 %patch100 -p1 -b .nodocs
 %endif
 
@@ -187,6 +183,9 @@ fi
 
 
 %changelog
+* Fri Apr 21 2017 Karsten Hopp <karsten@redhat.com> - 2.4.6-18
+- use new _module_build macro to limit dependencies for Modularity
+
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-17
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
