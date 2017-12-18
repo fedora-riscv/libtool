@@ -1,0 +1,21 @@
+---
+# Tests for classic and container
+- hosts: localhost
+  roles:
+  - role: standard-test-beakerlib
+    tags:
+    - classic
+    - container
+    tests:
+    - testsuite
+    required_packages:
+    - autoconf
+    - automake
+    - gcc-gfortran
+    - libtool
+    - libstdc++-devel
+    - make
+    - rpm-build
+    - texinfo
+    - wget
+    - yum-utils
