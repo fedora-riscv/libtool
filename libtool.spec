@@ -183,6 +183,9 @@ fi
 
 
 %changelog
+* Mon Jan 29 2018 Jakub Jelinek <jakub@redhat.com> - 2.4.6-21
+- bump: for gcc 8.*
+
 * Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-20
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
