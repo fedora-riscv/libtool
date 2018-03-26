@@ -21,6 +21,10 @@ Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 # ~> downstream
 # ~> remove possibly once #1158915 gets fixed somehow
 Patch0:  libtool-2.4.5-rpath.patch
+
+# ~> downstream (TODO)
+Patch1: libtool-2.4.6-am-1.16-test.patch
+
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
 %endif
@@ -94,6 +98,7 @@ Static libraries and header files for development with ltdl.
 %prep
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
+%patch1 -p1 -b .test
 %if ! 0%{?_module_build}
 %patch100 -p1 -b .nodocs
 %endif
@@ -188,6 +193,7 @@ fi
 %changelog
 * Mon Mar 26 2018 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-23
 - bake in versioned requirement on automake (rhbz#1193591)
+- fix testsuite FTBFS against automake 1.16.1
 
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-22
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
