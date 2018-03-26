@@ -25,6 +25,9 @@ Patch0:  libtool-2.4.5-rpath.patch
 # ~> downstream (TODO)
 Patch1: libtool-2.4.6-am-1.16-test.patch
 
+# ~> upstream 702a97fbb
+Patch2: libtool-2.4.6-specs.patch
+
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
 %endif
@@ -99,6 +102,7 @@ Static libraries and header files for development with ltdl.
 %setup -n libtool-%{version} -q
 %patch0 -p1 -b .rpath
 %patch1 -p1 -b .test
+%patch2 -p1 -b .gcc-specs
 %if ! 0%{?_module_build}
 %patch100 -p1 -b .nodocs
 %endif
@@ -194,6 +198,7 @@ fi
 * Mon Mar 26 2018 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-23
 - bake in versioned requirement on automake (rhbz#1193591)
 - fix testsuite FTBFS against automake 1.16.1
+- bypass -specs=* to gcc (rhbz#985592)
 
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-22
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
