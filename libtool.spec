@@ -3,13 +3,15 @@
 
 # See the bug #429880
 %global gcc_major  %(gcc -dumpversion || echo "666")
+# See rhbz#1193591
+%global automake_version %(set -- `automake --version | head -n 1` ; echo ${4-unknown})
 
 %bcond_without check
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 22%{?dist}
+Release: 23%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -80,6 +82,7 @@ the rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
 %package ltdl-devel
 Summary: Tools needed for development using the GNU Libtool Dynamic Module Loader
 Group:    Development/Libraries
+Requires: automake = %automake_version
 Requires: %{name}-ltdl = %{version}-%{release}
 License:  LGPLv2+
 
@@ -183,6 +186,9 @@ fi
 
 
 %changelog
+* Mon Mar 26 2018 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-23
+- bake in versioned requirement on automake (rhbz#1193591)
+
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-22
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
