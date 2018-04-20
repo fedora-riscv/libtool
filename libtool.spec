@@ -1,6 +1,3 @@
-# See the bug #1289759
-%undefine _hardened_build
-
 # See the bug #429880
 %global gcc_major  %(gcc -dumpversion || echo "666")
 # See rhbz#1193591
@@ -11,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 23%{?dist}
+Release: 24%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 Group:   Development/Tools
@@ -27,6 +24,12 @@ Patch1: libtool-2.4.6-am-1.16-test.patch
 
 # ~> upstream 702a97fbb
 Patch2: libtool-2.4.6-specs.patch
+
+# See the rhbz#1289759 and rhbz#1214506.  We disable hardening namely because
+# that bakes the CFLAGS/LDFLAGS into installed /bin/libtool and ltmain.sh files.
+# At the same time we want to have libltdl.so hardened.  Downstream-only patch.
+%undefine _hardened_build
+Patch3: libtool-2.4.6-hardening.patch
 
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
@@ -103,6 +106,7 @@ Static libraries and header files for development with ltdl.
 %patch0 -p1 -b .rpath
 %patch1 -p1 -b .test
 %patch2 -p1 -b .gcc-specs
+%patch3 -p1 -b .ltdl-hardening
 %if ! 0%{?_module_build}
 %patch100 -p1 -b .nodocs
 %endif
@@ -114,9 +118,6 @@ export CC=gcc
 export CXX=g++
 export F77=gfortran
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
-
-# rhbz#1214506
-%global _configure_libtool_hardening_hack 0
 
 %configure  --prefix=%{_prefix}                 \
             --exec-prefix=%{_prefix}            \
@@ -131,7 +132,9 @@ export CFLAGS="$RPM_OPT_FLAGS -fPIC"
             --mandir=%{_mandir}                 \
             --infodir=%{_infodir}
 
-make %{?_smp_mflags}
+make %{?_smp_mflags} \
+    CUSTOM_LTDL_CFLAGS="%_hardening_cflags" \
+    CUSTOM_LTDL_LDFLAGS="%_hardening_ldflags"
 
 
 %check
@@ -195,6 +198,9 @@ fi
 
 
 %changelog
+* Fri Apr 20 2018 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-24
+- harden libltdl.so (rhbz#1548751)
+
 * Mon Mar 26 2018 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-23
 - bake in versioned requirement on automake (rhbz#1193591)
 - fix testsuite FTBFS against automake 1.16.1
