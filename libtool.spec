@@ -30,6 +30,9 @@ Patch2: libtool-2.4.6-specs.patch
 %undefine _hardened_build
 Patch3: libtool-2.4.6-hardening.patch
 
+# rhbz#1622611, upstream 350082b6aa89f9ef603fcebbb4cf33f15a743f2f
+Patch4: libtool-2.4.6-fatal-handler.patch
+
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
 %endif
@@ -102,6 +105,7 @@ Static libraries and header files for development with ltdl.
 %patch1 -p1 -b .test
 %patch2 -p1 -b .gcc-specs
 %patch3 -p1 -b .ltdl-hardening
+%patch4 -p1 -b .fatal-handler
 %if ! 0%{?_module_build}
 %patch100 -p1 -b .nodocs
 %endif
@@ -179,6 +183,7 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 %changelog
 * Tue Aug 28 2018 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-26
 - cleanup post/postun, there are RPM triggers nowadays
+- fix error: line 2642: func__fatal_error: command not found (rhbz#1622611)
 
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-25
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
