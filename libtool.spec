@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 26%{?dist}
+Release: 27%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -52,6 +52,8 @@ BuildRequires: help2man
 
 # make sure we can configure all supported langs
 BuildRequires: libstdc++-devel, gcc-gfortran
+
+BuildRequires: gcc, gcc-c++
 
 
 %description
@@ -181,6 +183,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Tue Aug 28 2018 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-27
+- BR gcc, gcc-c++ (rhbz#1623078)
+
 * Tue Aug 28 2018 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-26
 - cleanup post/postun, there are RPM triggers nowadays
 - fix error: line 2642: func__fatal_error: command not found (rhbz#1622611)
