@@ -8,10 +8,9 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 25%{?dist}
+Release: 26%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
-Group:   Development/Tools
 
 Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 
@@ -41,8 +40,6 @@ Patch100: libtool-nodocs.patch
 # number changes need libtool rebuilding.
 Requires: gcc(major) = %{gcc_major}
 Requires: autoconf, automake, sed, tar, findutils
-Requires(post):  /sbin/install-info
-Requires(preun): /sbin/install-info
 
 %if ! 0%{?_module_build}
 BuildRequires: texinfo
@@ -75,8 +72,6 @@ Summary:  Runtime libraries for GNU Libtool Dynamic Module Loader
 Group:    System Environment/Libraries
 Provides: %{name}-libs = %{version}-%{release}
 License:  LGPLv2+
-Requires(post):  /sbin/ldconfig
-Requires(postun):  /sbin/ldconfig
 
 
 %description ltdl
@@ -152,22 +147,6 @@ rm -f %{buildroot}%{_infodir}/dir
 rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
-%post
-/sbin/install-info %{_infodir}/libtool.info.gz %{_infodir}/dir || :
-
-
-%post ltdl -p /sbin/ldconfig
-
-
-%preun
-if [ "$1" = 0 ]; then
-   /sbin/install-info --delete %{_infodir}/libtool.info.gz %{_infodir}/dir || :
-fi
-
-
-%postun ltdl -p /sbin/ldconfig
-
-
 %files
 %license COPYING
 %doc AUTHORS NEWS README THANKS TODO ChangeLog*
@@ -198,6 +177,9 @@ fi
 
 
 %changelog
+* Tue Aug 28 2018 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-26
+- cleanup post/postun, there are RPM triggers nowadays
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-25
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
