@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 27%{?dist}
+Release: 28%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -183,6 +183,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Mon Jan 21 2019 Björn Esser <besser82@fedoraproject.org> - 2.4.6-28
+- bump: for gcc 9.*
+
 * Tue Aug 28 2018 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-27
 - BR gcc, gcc-c++ (rhbz#1623078)
 
