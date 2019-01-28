@@ -74,7 +74,6 @@ and GNU Automake).
 
 %package ltdl
 Summary:  Runtime libraries for GNU Libtool Dynamic Module Loader
-Group:    System Environment/Libraries
 Provides: %{name}-libs = %{version}-%{release}
 License:  LGPLv2+
 
@@ -91,7 +90,6 @@ the rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
 
 %package ltdl-devel
 Summary: Tools needed for development using the GNU Libtool Dynamic Module Loader
-Group:    Development/Libraries
 Requires: automake = %automake_version
 Requires: %{name}-ltdl = %{version}-%{release}
 License:  LGPLv2+
