@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 29%{?dist}
+Release: 30%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -181,6 +181,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Wed Apr 24 2019 Björn Esser <besser82@fedoraproject.org> - 2.4.6-30
+- Remove hardcoded gzip suffix from GNU info pages
+
 * Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-29
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
