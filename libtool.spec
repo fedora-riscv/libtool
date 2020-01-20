@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 31%{?dist}
+Release: 32%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -181,6 +181,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Mon Jan 20 2020 Jakub Jelinek <jakub@redhat.com> - 2.4.6-32
+- bump: for gcc 10.*
+
 * Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-31
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
