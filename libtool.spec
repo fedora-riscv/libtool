@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 34%{?dist}
+Release: 35%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -113,6 +113,11 @@ Static libraries and header files for development with ltdl.
 autoreconf -v
 
 %build
+# The testsuite seems to not properly handle template instantiation and as
+# a result fails.  libtool itself appears to be OK from my by-hand testing.
+# Disable LTO until the testsuite issues are fixed
+%global _lto_cflags nil
+
 export CC=gcc
 export CXX=g++
 export F77=gfortran
@@ -181,6 +186,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Tue Apr 21 2020 Jeff Law <law@redhat.com> - 2.4.6-35
+- Disable LTO
+
 * Tue Apr 21 2020 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-34
 - bump for new automake, rhbz#1815814
 
