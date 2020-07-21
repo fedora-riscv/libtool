@@ -116,7 +116,7 @@ autoreconf -v
 # The testsuite seems to not properly handle template instantiation and as
 # a result fails.  libtool itself appears to be OK from my by-hand testing.
 # Disable LTO until the testsuite issues are fixed
-%global _lto_cflags nil
+%global _lto_cflags %{nil}
 
 export CC=gcc
 export CXX=g++
