@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 37%{?dist}
+Release: 38%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -186,6 +186,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Sun Dec 06 2020 Jakub Jelinek <jakub@redhat.com> - 2.4.6-38
+- bump: for gcc 11.* in rawhide
+
 * Wed Oct 21 2020 Jakub Jelinek <jakub@redhat.com> - 2.4.6-37
 - bump: for gcc 11.* in eln
 
