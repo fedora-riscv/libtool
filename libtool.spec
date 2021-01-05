@@ -54,6 +54,7 @@ BuildRequires: help2man
 BuildRequires: libstdc++-devel, gcc-gfortran
 
 BuildRequires: gcc, gcc-c++
+BuildRequires: make
 
 
 %description
