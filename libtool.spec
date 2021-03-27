@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 40%{?dist}
+Release: 41%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -91,7 +91,7 @@ the rest of the GNU Autotools (including GNU Autoconf and GNU Automake).
 
 %package ltdl-devel
 Summary: Tools needed for development using the GNU Libtool Dynamic Module Loader
-Requires: automake = %automake_version
+Requires: (automake = %automake_version if automake)
 Requires: %{name}-ltdl = %{version}-%{release}
 License:  LGPLv2+
 
@@ -187,6 +187,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Sat Mar 27 2021 Pavel Raiskup <praiskup@redhat.com> - 2.4.6-41
+- require appropriate automake only when automake is installed, rhbz#1813010
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-40
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
