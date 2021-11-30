@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 44%{?dist}
+Release: 45%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -32,6 +32,11 @@ Patch3: libtool-2.4.6-hardening.patch
 
 # rhbz#1622611, upstream 350082b6aa89f9ef603fcebbb4cf33f15a743f2f
 Patch4: libtool-2.4.6-fatal-handler.patch
+
+# The testsuite seems to not properly handle template instantiation and as
+# a result fails.  libtool itself appears to be OK from my by-hand testing. (by Jeff Law)
+# Disable LTO for link-order2 test (Related: #1988112)
+Patch5: libtool-2.4.6-disable-lto-link-order2.patch
 
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
@@ -107,6 +112,7 @@ Static libraries and header files for development with ltdl.
 %patch2 -p1 -b .gcc-specs
 %patch3 -p1 -b .ltdl-hardening
 %patch4 -p1 -b .fatal-handler
+%patch5 -p1 -b .disable-lto-link-order2
 %if ! 0%{?_module_build}
 %patch100 -p1 -b .nodocs
 %endif
@@ -114,9 +120,6 @@ Static libraries and header files for development with ltdl.
 autoreconf -v
 
 %build
-# The testsuite seems to not properly handle template instantiation and as
-# a result fails.  libtool itself appears to be OK from my by-hand testing.
-# Disable LTO until the testsuite issues are fixed
 %global _lto_cflags %{nil}
 
 export CC=gcc
@@ -187,6 +190,10 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Mon Nov 29 2021 Marek Kulik <mkulik@redhat.com> - 2.4.6-45
+- Enable LTO build
+- Add disable-lto-link-order2.patch to pass tests
+
 * Mon Oct 04 2021 Ondrej Dubaj <odubaj@redhat.com> - 2.4.6-44
 - rebuild with automake-1.16.5
 
