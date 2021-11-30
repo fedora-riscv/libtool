@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 45%{?dist}
+Release: 46%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -37,6 +37,9 @@ Patch4: libtool-2.4.6-fatal-handler.patch
 # a result fails.  libtool itself appears to be OK from my by-hand testing. (by Jeff Law)
 # Disable LTO for link-order2 test (Related: #1988112)
 Patch5: libtool-2.4.6-disable-lto-link-order2.patch
+
+# Support -fuse-ld= flag (#2024647)
+Patch6: libtool-2.4.6-pass-use-ld.patch
 
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
@@ -113,6 +116,7 @@ Static libraries and header files for development with ltdl.
 %patch3 -p1 -b .ltdl-hardening
 %patch4 -p1 -b .fatal-handler
 %patch5 -p1 -b .disable-lto-link-order2
+%patch6 -p1 -b .pass-use-ld
 %if ! 0%{?_module_build}
 %patch100 -p1 -b .nodocs
 %endif
@@ -190,6 +194,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Tue Nov 30 2021 Marek Kulik <mkulik@redhat.com> - 2.4.6-46
+- Add support for -fuse-ld= flag (#2024647)
+
 * Mon Nov 29 2021 Marek Kulik <mkulik@redhat.com> - 2.4.6-45
 - Enable LTO build
 - Add disable-lto-link-order2.patch to pass tests
