@@ -41,6 +41,9 @@ Patch5: libtool-2.4.6-disable-lto-link-order2.patch
 # Support -fuse-ld= flag (#2024647)
 Patch6: libtool-2.4.6-pass-use-ld.patch
 
+# Support -fsanitize= flag (#2024647)
+Patch7: libtool-2.4.6-pass-fsanitize.patch
+
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
 %endif
@@ -117,6 +120,7 @@ Static libraries and header files for development with ltdl.
 %patch4 -p1 -b .fatal-handler
 %patch5 -p1 -b .disable-lto-link-order2
 %patch6 -p1 -b .pass-use-ld
+%patch7 -p1 -b .pass-fsanitize
 %if ! 0%{?_module_build}
 %patch100 -p1 -b .nodocs
 %endif
@@ -195,7 +199,7 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 %changelog
 * Tue Nov 30 2021 Marek Kulik <mkulik@redhat.com> - 2.4.6-46
-- Add support for -fuse-ld= flag (#2024647)
+- Add support for -fuse-ld= & -fsanitize flags (#2024647)
 
 * Mon Nov 29 2021 Marek Kulik <mkulik@redhat.com> - 2.4.6-45
 - Enable LTO build
