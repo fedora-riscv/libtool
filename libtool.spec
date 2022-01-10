@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 45%{?dist}
+Release: 46%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -190,6 +190,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Mon Jan 10 2022 Jakub Jelinek <jakub@redhat.com> - 2.4.6-46
+- bump: for gcc 12.* in rawhide
+
 * Mon Nov 29 2021 Marek Kulik <mkulik@redhat.com> - 2.4.6-45
 - Enable LTO build
 - Add disable-lto-link-order2.patch to pass tests
