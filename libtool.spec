@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 47%{?dist}
+Release: 48%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -37,6 +37,12 @@ Patch4: libtool-2.4.6-fatal-handler.patch
 # a result fails.  libtool itself appears to be OK from my by-hand testing. (by Jeff Law)
 # Disable LTO for link-order2 test (Related: #1988112)
 Patch5: libtool-2.4.6-disable-lto-link-order2.patch
+
+# rhbz#2024647, upstream a5c6466528c060cc4660ad0319c00740db0e42ba
+Patch6: libtool-2.4.6-sanitize.patch
+
+# rhbz#2024647, upstream f9970d99293faf908fdc153a653fa5781095fb7a
+Patch7: libtool-2.4.6-use-ld.patch
 
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
@@ -113,6 +119,8 @@ Static libraries and header files for development with ltdl.
 %patch3 -p1 -b .ltdl-hardening
 %patch4 -p1 -b .fatal-handler
 %patch5 -p1 -b .disable-lto-link-order2
+%patch6 -p1 -b .sanitize
+%patch7 -p1 -b .use-ld
 %if ! 0%{?_module_build}
 %patch100 -p1 -b .nodocs
 %endif
@@ -190,6 +198,10 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Thu Jan 27 2022 Frederic Berat <fberat@redhat.com> - 2.4.6-48
+- Add support for "-fsanitize", rhbz#2024647
+- Add support for "-fuse-ld", rhbz#2024647
+
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-47
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
