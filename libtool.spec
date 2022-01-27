@@ -118,19 +118,7 @@ Static libraries and header files for development with ltdl.
 
 
 %prep
-%setup -n libtool-%{version} -q
-%patch0 -p1 -b .rpath
-%patch1 -p1 -b .test
-%patch2 -p1 -b .gcc-specs
-%patch3 -p1 -b .ltdl-hardening
-%patch4 -p1 -b .fatal-handler
-%patch5 -p1 -b .disable-lto-link-order2
-%patch6 -p1 -b .sanitize
-%patch7 -p1 -b .use-ld
-%patch8 -p1 -b .disable_non-pic_arm
-%if ! 0%{?_module_build}
-%patch100 -p1 -b .nodocs
-%endif
+%autosetup -n libtool-%{version} -p1
 
 autoreconf -v
 
@@ -206,6 +194,7 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 - Use make macros (based on Tom Stellard work for f33 and Timm Bäder)
   https://fedoraproject.org/wiki/Changes/UseMakeBuildInstallMacro
 - Disable non-PIC test for ARM as this is not supported on this arch
+- Use autosetup
 
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-47
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
