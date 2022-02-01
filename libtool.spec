@@ -134,7 +134,7 @@ autoreconf -v
 
 %check
 %if %{with check}
-make check VERBOSE=yes || { cat testsuite.log ; false ; }
+make check VERBOSE=yes || { cat tests/testsuite.dir/*/testsuite.log ; false ; }
 %endif
 
 
