@@ -125,18 +125,7 @@ autoreconf -v
 %build
 %global _lto_cflags %{nil}
 
-%configure  --prefix=%{_prefix}                 \
-            --exec-prefix=%{_prefix}            \
-            --bindir=%{_bindir}                 \
-            --sbindir=%{_sbindir}               \
-            --sysconfdir=%{_sysconfdir}         \
-            --datadir=%{_datadir}               \
-            --includedir=%{_includedir}         \
-            --libdir=%{_libdir}                 \
-            --libexecdir=%{_libexecdir}         \
-            --localstatedir=%{_localstatedir}   \
-            --mandir=%{_mandir}                 \
-            --infodir=%{_infodir}
+%configure
 
 %make_build \
     CUSTOM_LTDL_CFLAGS="%_hardening_cflags" \
@@ -195,6 +184,7 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
   https://fedoraproject.org/wiki/Changes/UseMakeBuildInstallMacro
 - Disable non-PIC test for ARM as this is not supported on this arch
 - Use autosetup
+- Use plain %%configure
 
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.6-47
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
