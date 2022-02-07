@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 49%{?dist}
+Release: 50%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -49,6 +49,10 @@ Patch7: libtool-2.4.6-use-ld.patch
 # Please refer to the following ticket regarding PIC support on ARM:
 # https://bugs.launchpad.net/ubuntu/+source/gcc-4.4/+bug/503448
 Patch8: libtool-2.4.6-disable_non-pic_arm.patch
+
+# rhbz#2047389, patch sent upstream
+# https://lists.gnu.org/archive/html/libtool-patches/2022-02/msg00000.html
+Patch9: libtool-2.4.6-keep-compiler-deps.patch
 
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
@@ -176,6 +180,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Thu Feb 17 2022 Frederic Berat <fberat@redhat.com> - 2.4.6-50
+- Keep compiler generated list of library dependencies.
+
 * Sun Feb 13 2022 Jeff Law <jeffreyalaw@gmail.com> - 2.4.6-49
 - Re-enable LTO (completing change from Nov 29, 2021)
 
