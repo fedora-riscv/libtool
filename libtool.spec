@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.6
-Release: 48%{?dist}
+Release: 49%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -123,7 +123,6 @@ Static libraries and header files for development with ltdl.
 autoreconf -v
 
 %build
-%global _lto_cflags %{nil}
 
 %configure
 
@@ -177,6 +176,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Sun Feb 13 2022 Jeff Law <jeffreyalaw@gmail.com> - 2.4.6-49
+- Re-enable LTO (completing change from Nov 29, 2021)
+
 * Tue Feb 01 2022 Frederic Berat <fberat@redhat.com> - 2.4.6-48
 - Add support for "-fsanitize", rhbz#2024647
 - Add support for "-fuse-ld", rhbz#2024647
