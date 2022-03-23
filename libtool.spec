@@ -7,8 +7,8 @@
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
-Version: 2.4.6
-Release: 50%{?dist}
+Version: 2.4.7
+Release: 1%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -18,41 +18,26 @@ Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 # ~> remove possibly once #1158915 gets fixed somehow
 Patch0:  libtool-2.4.5-rpath.patch
 
-# ~> downstream (TODO)
-Patch1: libtool-2.4.6-am-1.16-test.patch
-
-# ~> upstream 702a97fbb
-Patch2: libtool-2.4.6-specs.patch
-
 # See the rhbz#1289759 and rhbz#1214506.  We disable hardening namely because
 # that bakes the CFLAGS/LDFLAGS into installed /bin/libtool and ltmain.sh files.
 # At the same time we want to have libltdl.so hardened.  Downstream-only patch.
 %undefine _hardened_build
-Patch3: libtool-2.4.6-hardening.patch
-
-# rhbz#1622611, upstream 350082b6aa89f9ef603fcebbb4cf33f15a743f2f
-Patch4: libtool-2.4.6-fatal-handler.patch
+Patch1: libtool-2.4.6-hardening.patch
 
 # The testsuite seems to not properly handle template instantiation and as
 # a result fails.  libtool itself appears to be OK from my by-hand testing. (by Jeff Law)
 # Disable LTO for link-order2 test (Related: #1988112)
-Patch5: libtool-2.4.6-disable-lto-link-order2.patch
-
-# rhbz#2024647, upstream a5c6466528c060cc4660ad0319c00740db0e42ba
-Patch6: libtool-2.4.6-sanitize.patch
-
-# rhbz#2024647, upstream f9970d99293faf908fdc153a653fa5781095fb7a
-Patch7: libtool-2.4.6-use-ld.patch
+Patch2: libtool-2.4.6-disable-lto-link-order2.patch
 
 # non-PIC libraries are not supported on ARMv7
 # Since we removed "-fPIC" from global CFLAGS this test fails on this arch (as expected)
 # Please refer to the following ticket regarding PIC support on ARM:
 # https://bugs.launchpad.net/ubuntu/+source/gcc-4.4/+bug/503448
-Patch8: libtool-2.4.6-disable_non-pic_arm.patch
+Patch3: libtool-2.4.6-disable_non-pic_arm.patch
 
 # rhbz#2047389, patch sent upstream
 # https://lists.gnu.org/archive/html/libtool-patches/2022-02/msg00000.html
-Patch9: libtool-2.4.6-keep-compiler-deps.patch
+Patch4: libtool-2.4.6-keep-compiler-deps.patch
 
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
@@ -180,6 +165,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Mon Mar 21 2022 Frederic Berat <fberat@redhat.com> - 2.4.7-1
+- Rebase to libtool 2.4.7 (#2065004)
+
 * Thu Feb 17 2022 Frederic Berat <fberat@redhat.com> - 2.4.6-50
 - Keep compiler generated list of library dependencies.
 
