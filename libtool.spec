@@ -1,3 +1,7 @@
+%ifarch riscv64
+%global debug_package %{nil}
+%endif
+
 # See the bug #429880
 %global gcc_major  %(gcc -dumpversion || echo "666")
 # See rhbz#1193591
@@ -8,7 +12,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.7
-Release: 2%{?dist}
+Release: 2.0.riscv64%{?dist}
 License: GPLv2+ and LGPLv2+ and GFDL
 URL:     http://www.gnu.org/software/libtool/
 
@@ -165,6 +169,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Fri Aug 05 2022 David Abdurachmanov <davidlt@rivosinc.com> - 2.4.7-2.0.riscv64
+- Disable debug packages on riscv64
+
 * Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.7-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
