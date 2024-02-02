@@ -120,8 +120,8 @@ index feb71dcd..b62a9215 100644
  AT_SETUP([force non-PIC objects])
  
  AT_CHECK([case $host in
--hppa*|amd64*|x86_64*|s390*)
-+hppa*|amd64*|x86_64*|s390*|riscv*)
+-hppa*|x86_64*|s390*)
++hppa*|x86_64*|s390*|riscv*)
    # These hosts cannot use non-PIC shared libs
    exit 77 ;;
  *-solaris*|*-sunos*)
