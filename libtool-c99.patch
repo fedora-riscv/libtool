@@ -1,0 +1,20 @@
+Include <string.h> for the strcmp function.  This improves C99
+compiler compatibility because it avoids an implicit function
+declaration.
+
+Submitted upstream:
+
+  <https://lists.gnu.org/archive/html/libtool-patches/2023-01/msg00000.html>
+
+diff --git a/tests/lt_dlopen_a.at b/tests/lt_dlopen_a.at
+index 95f18a0df165d41d..d3948738e4199cc6 100644
+--- a/tests/lt_dlopen_a.at
++++ b/tests/lt_dlopen_a.at
+@@ -27,6 +27,7 @@ AT_KEYWORDS([libltdl lt_dlopen_a])
+ AT_DATA([main.c],
+ [[#include <ltdl.h>
+ #include <stdio.h>
++#include <string.h>
+ 
+ /* This dlopen() in the main executable should override any dlopen()s in
+    shared libraries etc.
