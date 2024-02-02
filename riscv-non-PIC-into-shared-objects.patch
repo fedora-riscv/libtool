@@ -1,0 +1,132 @@
+From MAILER-DAEMON Thu Feb 01 16:04:14 2024
+Received: from list by lists.gnu.org with archive (Exim 4.90_1)
+	id 1rVeEH-0006Vu-Gh
+	for mharc-libtool-patches@gnu.org; Thu, 01 Feb 2024 16:04:13 -0500
+Received: from eggs.gnu.org ([2001:470:142:3::10])
+ by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <palmer@rivosinc.com>)
+ id 1rVdmJ-0007wb-Op
+ for libtool-patches@gnu.org; Thu, 01 Feb 2024 15:35:20 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <palmer@rivosinc.com>)
+ id 1rVdmB-0003MQ-4E
+ for libtool-patches@gnu.org; Thu, 01 Feb 2024 15:35:19 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1d94b222a3aso10591565ad.2
+ for <libtool-patches@gnu.org>; Thu, 01 Feb 2024 12:35:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1706819707; x=1707424507;
+ darn=gnu.org; 
+ h=to:from:cc:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:to:cc:subject:date:message-id:reply-to;
+ bh=rx/fQhuTVCQDQ0qweI0mMDiWtQVxyrst0rLwP6hMZYw=;
+ b=JMjleLVUcsiqX4cH1hiIn1dv/H2L5AUg55yPUju40RNWsH5UIJyQ12kuTDXrG3UT2O
+ aQ9+nJbLRUe6KKT3wNqDko0xxdL9Io/ifqyUgDO1kvuYn5rjs6PqbTwVraCd25CTp8jA
+ GJckDmDAnDs+pmUVCC2wuJa3kWnphunswBHZ1Xa+oLuRAl2bn3l9qw4P6QN3GRatPZp5
+ fUjKIP/JdOvHRxgc5qfSqfDNFxpSQI88+/mZrS6MlzVJeqB5EbFH9NMbvgDV90vUDezC
+ nK1mQZeoFKxonXWWFsqYtTRg2xX3OGlqAYYfzGnw2aHcPPL/TKAtAIgWiJ6m1lJXdVlp
+ BUmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706819707; x=1707424507;
+ h=to:from:cc:content-transfer-encoding:mime-version:message-id:date
+ :subject:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rx/fQhuTVCQDQ0qweI0mMDiWtQVxyrst0rLwP6hMZYw=;
+ b=eht7eeLjBZxZ4MhiqumZXqGoGpn9bRUoXS4GknQ+5DubkPLqcL5fjSFNYeUTVdJ0F6
+ pU1DaVsRQbfJ3kM6fvP7XyNSYX3QM1b3Dv9ysGpWpmItwq2D5ZKEMOUNz1Xj82zthxKp
+ Cl6fqKpfTH83WkR+pERRM8xTHjT8mmar3yQb2HtdWNZMkn5KlA2V/ed4sF2LUoNhoErT
+ K2kFCxP6O5buN8gkYDuOMu+p0SOwK+AyIN9mESR8mwCyuM0FyfaH+9Z/jo5G7hMruRm9
+ NWtpKNTSIi0pe4SBUiL8eCLPgPMICjmPZD2iZI1bkkCwLrQldjjF0Dn9yGn5orL6HMVF
+ aeEw==
+X-Gm-Message-State: AOJu0YwbdC57wFaP3YZR/+NDcpIdmtjHzvBwoGgfbhl+jupDEjcdl6/Z
+ roOfVdBLkLN8hWsCmTJOQOqDP7YV2EPKeHLk4ZaHRppz1FhFDVO1UlPToH3+Mk1cnDy2Q5NZtpa
+ 8
+X-Google-Smtp-Source: AGHT+IFef/XNpazSDQ1JLc4miPn2A2VXHAyrArK0DKSlblS2jsbrAywrdsZ3oxL8MVl7c7QiYlKrWA==
+X-Received: by 2002:a17:903:2806:b0:1d9:5b78:57fb with SMTP id
+ kp6-20020a170903280600b001d95b7857fbmr136400plb.61.1706819707504; 
+ Thu, 01 Feb 2024 12:35:07 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCXBMvWGqPr1J/8Uo5Ka+DDIlpsMEHA0MQgx8hxP/zCqsbdmvcuqU/vfYKIsKRxKFJvP5D+Ylr4c8OKJ7iNbSSly+0K2
+Received: from localhost ([12.44.203.122]) by smtp.gmail.com with ESMTPSA id
+ o11-20020a170903008b00b001d8f112e910sm245323pld.69.2024.02.01.12.35.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Feb 2024 12:35:07 -0800 (PST)
+Subject: [PATCH] RISC-V doesn't allow linking non-PIC into shared objects
+Date: Thu,  1 Feb 2024 12:34:14 -0800
+Message-ID: <20240201203413.2664-2-palmer@rivosinc.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Cc: David Abdurachmanov <davidlt@rivosinc.com>,
+ Palmer Dabbelt <palmer@rivosinc.com>
+From: Palmer Dabbelt <palmer@rivosinc.com>
+To: libtool-patches@gnu.org
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=palmer@rivosinc.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 01 Feb 2024 16:04:11 -0500
+X-BeenThere: libtool-patches@gnu.org
+X-Mailman-Version: 2.1.29
+Precedence: list
+List-Id: Patch submission list for the GNU libtool shared library maintenance
+ tool <libtool-patches.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/libtool-patches>,
+ <mailto:libtool-patches-request@gnu.org?subject=unsubscribe>
+List-Archive: <https://lists.gnu.org/archive/html/libtool-patches>
+List-Post: <mailto:libtool-patches@gnu.org>
+List-Help: <mailto:libtool-patches-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/libtool-patches>,
+ <mailto:libtool-patches-request@gnu.org?subject=subscribe>
+X-List-Received-Date: Thu, 01 Feb 2024 20:35:20 -0000
+
+I'm not sure exactly why, but it looks like this has started failing on
+the latest Fedora rebuilds (with a bump to GCC-14 prereleases) with
+errors along the lines of
+
+    /usr/bin/ld: .libs/libhello_la-hello.o: relocation R_RISCV_HI20 against `a local symbol' can not be used when making a shared object; recompile with -fPIC
+    /usr/bin/ld: .libs/libhello_la-foo.o: relocation R_RISCV_HI20 against `a local symbol' can not be used when making a shared object; recompile with -fPIC
+    /usr/bin/ld: unresolvable R_RISCV_CALL_PLT relocation against symbol `puts@@GLIBC_2.27'
+    /usr/bin/ld: unresolvable R_RISCV_CALL_PLT relocation against symbol `__printf_chk@@GLIBC_2.27'
+
+As far as I can tell this always should have failed on RISC-V, as
+non-PIC objects have never worked correctly in shared libraries.  We
+have added some stricter linker error checking over the last few months
+so it's possible this is a newly reported error, but I'd guess that the
+resulting binaries have always been invalid.
+
+Regardless of exactly why it's getting noticed now, R_RISCV_HI20 is very
+much an absolute relocation (it maps to LUI, which just loads up a
+constant address) and thus won't work for shared libraries.  Given that
+other ports skip this test that seems like the way to go for RISC-V
+as well.
+
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+---
+ tests/demo.at | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/demo.at b/tests/demo.at
+index feb71dcd..b62a9215 100644
+--- a/tests/demo.at
++++ b/tests/demo.at
+@@ -511,7 +511,7 @@ AT_CLEANUP
+ AT_SETUP([force non-PIC objects])
+ 
+ AT_CHECK([case $host in
+-hppa*|amd64*|x86_64*|s390*)
++hppa*|amd64*|x86_64*|s390*|riscv*)
+   # These hosts cannot use non-PIC shared libs
+   exit 77 ;;
+ *-solaris*|*-sunos*)
+-- 
+2.43.0
+
+
+

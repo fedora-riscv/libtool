@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.7
-Release: 10%{?dist}
+Release: 10.0.riscv64%{?dist}
 
 # To help future rebase, the following licenses were seen in the following files/folders:
 # '*' is anything that was not explicitly listed earlier in the folder
@@ -75,6 +75,10 @@ Patch4: libtool-2.4.6-keep-compiler-deps.patch
 # Patch sent upstream
 # https://lists.gnu.org/archive/html/libtool-patches/2022-12/msg00004.html
 Patch5: 0001-tests-Fix-grep-warning-about-stray-before.patch
+
+# Patch sent upstream
+# https://lists.gnu.org/archive/html/libtool-patches/2024-02/msg00002.html
+Patch6: riscv-non-PIC-into-shared-objects.patch
 
 %if ! 0%{?_module_build}
 Patch100: libtool-nodocs.patch
@@ -204,6 +208,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Fri Feb 02 2024 David Abdurachmanov <davidlt@rivosinc.com> - 2.4.7-10.0.riscv64
+- RISC-V doesn't allow linking non-PIC into shared objects
+
 * Sun Jan 21 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.7-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
