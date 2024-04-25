@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.7
-Release: 10.0.riscv64%{?dist}
+Release: 10.1.riscv64%{?dist}
 
 # To help future rebase, the following licenses were seen in the following files/folders:
 # '*' is anything that was not explicitly listed earlier in the folder
@@ -208,6 +208,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Thu Apr 25 2024 David Abdurachmanov <davidlt@rivosinc.com> - 2.4.7-10.1.riscv64
+- Rebuild for a new GCC 14
+
 * Fri Feb 02 2024 David Abdurachmanov <davidlt@rivosinc.com> - 2.4.7-10.0.riscv64
 - RISC-V doesn't allow linking non-PIC into shared objects
 
