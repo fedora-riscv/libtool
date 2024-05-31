@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.4.7
-Release: 10%{?dist}
+Release: 11%{?dist}
 
 # To help future rebase, the following licenses were seen in the following files/folders:
 # '*' is anything that was not explicitly listed earlier in the folder
@@ -55,7 +55,7 @@ Patch0:  libtool-2.4.5-rpath.patch
 # that bakes the CFLAGS/LDFLAGS into installed /bin/libtool and ltmain.sh files.
 # At the same time we want to have libltdl.so hardened.  Downstream-only patch.
 %undefine _hardened_build
-Patch1: libtool-2.4.6-hardening.patch
+Patch1: libtool-2.4.7-hardening.patch
 
 # The testsuite seems to not properly handle template instantiation and as
 # a result fails.  libtool itself appears to be OK from my by-hand testing. (by Jeff Law)
@@ -204,6 +204,9 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Fri May 31 2024 Frédéric Bérat <fberat@redhat.com> - 2.4.7-11
+- Rework hardening patch to include loaders. (RHEL-33501)
+
 * Sun Jan 21 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.7-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
