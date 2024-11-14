@@ -7,8 +7,8 @@ diff -r -U5 libtool-2.4.6.old/tests/demo.at libtool-2.4.6/tests/demo.at
  AT_SETUP([force non-PIC objects])
  
  AT_CHECK([case $host in
--hppa*|x86_64*|s390*)
-+hppa*|x86_64*|s390*|arm*)
+-hppa*|amd64*|x86_64*|s390*)
++hppa*|amd64*|x86_64*|s390*|arm*)
    # These hosts cannot use non-PIC shared libs
    exit 77 ;;
  *-solaris*|*-sunos*)

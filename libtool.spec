@@ -7,8 +7,8 @@
 
 Summary: The GNU Portable Library Tool
 Name:    libtool
-Version: 2.4.7
-Release: 12%{?dist}
+Version: 2.5.4
+Release: 1%{?dist}
 
 # To help future rebase, the following licenses were seen in the following files/folders:
 # '*' is anything that was not explicitly listed earlier in the folder
@@ -49,38 +49,23 @@ Source:  http://ftp.gnu.org/gnu/libtool/libtool-%{version}.tar.xz
 
 # ~> downstream
 # ~> remove possibly once #1158915 gets fixed somehow
-Patch0:  libtool-2.4.5-rpath.patch
+Patch:  libtool-2.4.5-rpath.patch
 
 # See the rhbz#1289759 and rhbz#1214506.  We disable hardening namely because
 # that bakes the CFLAGS/LDFLAGS into installed /bin/libtool and ltmain.sh files.
 # At the same time we want to have libltdl.so hardened.  Downstream-only patch.
 %undefine _hardened_build
-Patch1: libtool-2.4.7-hardening.patch
-
-# The testsuite seems to not properly handle template instantiation and as
-# a result fails.  libtool itself appears to be OK from my by-hand testing. (by Jeff Law)
-# Disable LTO for link-order2 test (Related: #1988112)
-Patch2: libtool-2.4.6-disable-lto-link-order2.patch
+Patch: libtool-2.4.7-hardening.patch
 
 # non-PIC libraries are not supported on ARMv7
 # Since we removed "-fPIC" from global CFLAGS this test fails on this arch (as expected)
 # Please refer to the following ticket regarding PIC support on ARM:
 # https://bugs.launchpad.net/ubuntu/+source/gcc-4.4/+bug/503448
-Patch3: libtool-2.4.6-disable_non-pic_arm.patch
-
-# rhbz#2047389, patch sent upstream
-# https://lists.gnu.org/archive/html/libtool-patches/2022-02/msg00000.html
-Patch4: libtool-2.4.6-keep-compiler-deps.patch
-
-# Patch sent upstream
-# https://lists.gnu.org/archive/html/libtool-patches/2022-12/msg00004.html
-Patch5: 0001-tests-Fix-grep-warning-about-stray-before.patch
+Patch: libtool-2.4.6-disable_non-pic_arm.patch
 
 %if ! 0%{?_module_build}
-Patch100: libtool-nodocs.patch
+Patch: libtool-nodocs.patch
 %endif
-
-Patch101: libtool-c99.patch
 
 # /usr/bin/libtool includes paths within gcc's versioned directories
 # Libtool must be rebuilt whenever a new upstream gcc is built
@@ -204,6 +189,13 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
+* Thu Nov 21 2024 Frédéric Bérat <fberat@redhat.com> - 2.5.4-1
+- New upstream release
+
+* Thu Nov 14 2024 Frédéric Bérat <fberat@redhat.com> - 2.5.3-1
+- New upstream release
+- Remove patch numbering as it isn't required anymore
+
 * Thu Jul 18 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.4.7-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
