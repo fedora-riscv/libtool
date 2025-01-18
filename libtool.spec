@@ -71,7 +71,7 @@ Patch: libtool-2.4.6-keep-compiler-deps.patch
 
 # Patch sent upstream
 # https://lists.gnu.org/archive/html/libtool-patches/2024-02/msg00002.html
-Patch6: riscv-non-PIC-into-shared-objects.patch
+Patch: riscv-non-PIC-into-shared-objects.patch
 
 %if ! 0%{?_module_build}
 Patch: libtool-nodocs.patch
