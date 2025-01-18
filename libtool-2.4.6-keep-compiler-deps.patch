@@ -1,16 +1,15 @@
-diff -r -U5 libtool-2.4.6/build-aux/ltmain.in libtool-2.4.6.new/build-aux/ltmain.in
---- libtool-2.4.6/build-aux/ltmain.in	2022-02-22 09:21:35.317958251 +0100
-+++ libtool-2.4.6.new/build-aux/ltmain.in	2022-02-22 09:16:10.117571787 +0100
-@@ -501,21 +501,14 @@
-     fi
- 
+diff --git a/build-aux/ltmain.in b/build-aux/ltmain.in
+index fa15777..b4e281d 100644
+--- a/build-aux/ltmain.in
++++ b/build-aux/ltmain.in
+@@ -570,17 +570,10 @@ libtool_validate_options ()
      # preserve --debug
      test : = "$debug_cmd" || func_append preserve_args " --debug"
  
--    case $host in
+-    case $host_os in
 -      # Solaris2 added to fix http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16452
 -      # see also: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=59788
--      *cygwin* | *mingw* | *pw32* | *cegcc* | *solaris2* | *os2*)
+-      cygwin* | mingw* | windows* | pw32* | cegcc* | solaris2* | os2*)
 -        # don't eliminate duplications in $postdeps and $predeps
 -        opt_duplicate_compiler_generated_deps=:
 -        ;;
@@ -25,21 +24,18 @@ diff -r -U5 libtool-2.4.6/build-aux/ltmain.in libtool-2.4.6.new/build-aux/ltmain
  
      $opt_help || {
        # Sanity checks first:
-       func_check_version_match
- 
-diff -r -U5 libtool-2.4.6/build-aux/ltmain.sh libtool-2.4.6.new/build-aux/ltmain.sh
---- libtool-2.4.6/build-aux/ltmain.sh	2015-02-15 17:15:12.000000000 +0100
-+++ libtool-2.4.6.new/build-aux/ltmain.sh	2022-02-22 09:16:44.783613061 +0100
-@@ -2413,21 +2413,14 @@
-     fi
- 
+diff --git a/build-aux/ltmain.sh b/build-aux/ltmain.sh
+index 3e6a3db..ff2d73a 100644
+--- a/build-aux/ltmain.sh
++++ b/build-aux/ltmain.sh
+@@ -2720,17 +2720,10 @@ libtool_validate_options ()
      # preserve --debug
      test : = "$debug_cmd" || func_append preserve_args " --debug"
  
--    case $host in
+-    case $host_os in
 -      # Solaris2 added to fix http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16452
 -      # see also: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=59788
--      *cygwin* | *mingw* | *pw32* | *cegcc* | *solaris2* | *os2*)
+-      cygwin* | mingw* | windows* | pw32* | cegcc* | solaris2* | os2*)
 -        # don't eliminate duplications in $postdeps and $predeps
 -        opt_duplicate_compiler_generated_deps=:
 -        ;;
@@ -54,5 +50,3 @@ diff -r -U5 libtool-2.4.6/build-aux/ltmain.sh libtool-2.4.6.new/build-aux/ltmain
  
      $opt_help || {
        # Sanity checks first:
-       func_check_version_match
- 
