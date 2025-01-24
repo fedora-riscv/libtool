@@ -8,7 +8,7 @@
 Summary: The GNU Portable Library Tool
 Name:    libtool
 Version: 2.5.4
-Release: 3.0.riscv64%{?dist}
+Release: 4.0.riscv64%{?dist}
 
 # To help future rebase, the following licenses were seen in the following files/folders:
 # '*' is anything that was not explicitly listed earlier in the folder
@@ -199,8 +199,11 @@ rm -f %{buildroot}%{_libdir}/libltdl.{a,la}
 
 
 %changelog
-* Sat Jan 18 2025 David Abdurachmanov <davidlt@rivosinc.com> - 2.5.4-3.0.riscv64
+* Fri Jan 24 2025 David Abdurachmanov <davidlt@rivosinc.com> - 2.5.4-4.0.riscv64
 - RISC-V doesn't allow linking non-PIC into shared objects
+
+* Mon Jan 20 2025 Fedora Release Engineering <releng@fedoraproject.org> - 2.5.4-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
 
 * Sat Jan 11 2025 Jakub Jelinek <jakub@redhat.com> - 2.5.4-3
 - bump: for gcc 15.* in rawhide
